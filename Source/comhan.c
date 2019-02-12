@@ -11,11 +11,84 @@
 
 #include "comhan.h"
 
-void main()
-{
-    char buffer[BUF_SIZE];
-    int buf_len;
-    buf_len = BUF_SIZE;
+// size of the command line buffer
+#define BUF_SIZE 80
 
-    sys_req(CON, READ, buffer, &buf_len);
+// length of the command line
+int length;
+
+// stores the command line argument
+char buffer[BUF_SIZE];
+
+// array of pointers to the command line arguments
+char *args[10];
+
+// command line argument counter
+int argc;
+
+// our default prompt
+char prompt[20] = "mpx>";
+
+// default version information
+const char version[] = "MPX OS - Version 1.0\n";
+
+// array of pointers to strings for our commands
+char *cmds[] = 
+{
+    "help",
+    "version",
+    "date",
+    "quit",
+    "directory",
+    "prompt",
+    "alias",
+    NULL    
+};
+
+// array of pointers to aliases for our string commands
+char *als[] = 
+{
+    "   ",
+    "   ",
+    "   ",
+    "   ",
+    "   ",
+    "   ",
+    "   ",
+    NULL
+};
+
+/*
+    COMHAN - this is the command handler for the MPX OS
+*/
+
+void comhan()
+{
+    do
+    {
+        printf("\n%s ", prompt);
+        length = BUF_SIZE;
+        sys_req(CON, READ, buffer, &length);
+
+        argc = set_args(buffer, args);
+    } while(1);    
+}
+
+int set_args(char *buffer, char *arcs[])
+{
+    static char separators[5] = " =";
+
+    static int i;
+
+    i = 0;
+
+    strlwr(buffer);
+
+    args[i] = strtok(buffer, separators);
+    
+    while(args[i] != NULL) {
+        args[++i] = strtok(NULL, separators);  
+    }
+    
+    return i;
 }
