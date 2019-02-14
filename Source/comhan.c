@@ -1,10 +1,10 @@
-/*
+/* test
 *   comhan.c
 *   02/06/2019
 *   COMHAN (Command Handler) is the command interface for MPX
 *   Its role is to:
 *   1. read a command entered via the system console keyboard
-*   2. analyze the command 
+*   2. analyze the command
 *   3. execute the command
 *
 */
@@ -33,7 +33,7 @@ char prompt[20] = "mpx>";
 const char version[] = "MPX OS - Version 1.0\n";
 
 // array of pointers to strings for our commands
-char *cmds[] = 
+char *cmds[] =
 {
     "help",
     "version",
@@ -42,11 +42,11 @@ char *cmds[] =
     "directory",
     "prompt",
     "alias",
-    NULL    
+    NULL
 };
 
 // array of pointers to aliases for our string commands
-char *als[] = 
+char *als[] =
 {
     "   ",
     "   ",
@@ -71,7 +71,7 @@ void comhan()
         sys_req(CON, READ, buffer, &length);
 
         argc = set_args(buffer, args);
-    } while(1);    
+    } while(1);
 }
 
 int set_args(char *buffer, char *arcs[])
@@ -85,10 +85,10 @@ int set_args(char *buffer, char *arcs[])
     strlwr(buffer);
 
     args[i] = strtok(buffer, separators);
-    
+
     while(args[i] != NULL) {
-        args[++i] = strtok(NULL, separators);  
+        args[++i] = strtok(NULL, separators);
     }
-    
+
     return i;
 }
