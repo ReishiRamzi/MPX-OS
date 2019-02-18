@@ -18,7 +18,7 @@ char *helpList[] =
     "directory          - List .mpx files\n",
     "prompt=string      - Change MPX promt\n",
     "alias              - Assign string to command\n"
-}
+};
 
 char help(int helpCmd, int numCmds){
     char helpOut;
