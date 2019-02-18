@@ -1,7 +1,7 @@
 /*
     file:   direct.c
 
-    This file contains the function which reads the names and sizes of the MPX/OS process files from the disk, 
+    This file contains the function which reads the names and sizes of the MPX/OS process files from the disk,
     and stores them in the directory entry array
 */
 
@@ -25,7 +25,7 @@ int directory(dir *direct, int dir_size)
     done = findfirst ("*.MPX", &ffblk, 0);
 
     while(!done && num_procs < dir_size) {
-        strcpy_s(filename, ffblk.ff_fsize;
+        strcpy_s(filename, ffblk.ff_fsize);
         ++num_procs;
         direct++;
         done = findnext(&ffblk);
