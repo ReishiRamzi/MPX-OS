@@ -4,7 +4,7 @@
 *   COMHAN (Command Handler) is the command interface for MPX
 *   Its role is to:
 *   1. read a command entered via the system console keyboard
-*   2. analyze the command 
+*   2. analyze the command
 *   3. execute the command
 *
 */
@@ -31,8 +31,8 @@
 // we will be making system requests
 extern int sys_req
 (
-    int op_number, 
-    int op_type, 
-    char buffer[], 
+    int op_number,
+    int op_type,
+    char buffer[],
     int *length
 );

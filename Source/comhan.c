@@ -64,6 +64,7 @@ char *als[] =
 
 void comhan()
 {
+    int running = 1;
     do
     {
         printf("\n%s ", prompt);
@@ -86,6 +87,9 @@ void comhan()
         if (args[0] != NULL){
             for (int i = 0; i < cmdArrLen; i++){
                 if (strcmp(args[0], cmds[i]) == 0){
+                    cmdMatch = i;
+                }
+                if (strcmp(args[0], als[i]) == 0){
                     cmdMatch = i;
                 }
             }
@@ -115,7 +119,7 @@ void comhan()
                 //Date
                 break;
             case 4:
-                //Quit
+                running = quit();
                 break;
             case 5:
                 //Directory
@@ -138,7 +142,7 @@ void comhan()
 
         // END PLACEHOLDER
 
-    } while(1);
+    } while(running == 1);
 }
 
 int set_args(char *buffer, char *arcs[])
