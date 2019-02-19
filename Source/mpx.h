@@ -2,7 +2,8 @@
 *
 *       file: mpx.h
 *       Header file for the MPX Operating System
-*       This file contains constat, structure and function prototypes for the MPX OS
+*       This file contains constant, structure and function prototypes for the MPX OS
+*       include this file in other headers for its extern variables
 *
 */
 
@@ -76,3 +77,5 @@ int directory(dir *, int);
 
 // array of directory entries - see direct.c
 extern dir direct[]; 
+
+extern struct pcb *pcb_list;
