@@ -39,7 +39,7 @@ int  directory(dir *, int);           /* Support function to load the */
 					                  /* directory array.             */
 int quit();                           /* MPX quit function.           */
 char* version();                      /* Check current MPX version    */
-void alias (char *, int, char);
+void alias (char *, int, char);		  /* make an alias for commands   */
 /*
  *   Global variable EXTERN directives.
  *

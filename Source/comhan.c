@@ -18,7 +18,7 @@ char prompt[20] = "mpx>";
 
 char *args[10];          // Array of pointers to cmd line args
 int argc;                // Stores count of args
-
+static int NUM_CMDS;
 // Array of pointers to strings for our commands
 char *cmds[] =
 {
@@ -31,7 +31,9 @@ char *cmds[] =
 	"alias",
 	"\0"
 };
-
+// set number of commands...
+// TODO: make a function
+NUM_CMDS = 7;
 // Array of pointers to aliases for our commands
 char *als[] =
 {
@@ -58,9 +60,9 @@ char *als[] =
 void comhan()
 {
 	int running = 1;
-	int cmdArrLen;
+	//int cmdArrLen;
 	int cmdMatch;
-	int cmdMatch2;
+	//int cmdMatch2;
 	int i;
 	char returnPrint;
 	do {
@@ -72,36 +74,34 @@ void comhan()
 		sys_req(CON,READ,buffer,&length);  /* Request CON input       */
 		argc = set_args(buffer, args);
 		//printf("%s",args[0]);            // for debugging
-		// Switch statement for the different commands
 		// number of commands already stored in argc (arguments count)
 		// length already stored in length - set in sys_reqc.c from sys_req()
 		//cmdArrLen = sizeof(cmds) / sizeof(cmds[0]);
 		cmdMatch = -1;
-		cmdMatch2 = -1;
+		//cmdMatch2 = -1;
 		// if there are arguments, i.e. the first argument is not null
 		if (args[0] != '\0'){
 			// and check our first argument against each possible command and alias
-			for (i = 0; i < 7; i++)
+			// TODO: 7 commands currently, should convert to variable
+			for (i = 0; i < NUM_CMDS; i++)
 			{
 				// if there's a match in cmds or als
 				if ((strcmp(args[0], cmds[i]) == 0) || (strcmp(args[0], als[i]) == 0))
 				{
-					//set the match flag
+					//set the match flag to the index of the command
 					cmdMatch = i;
 				}
 			}
 		}
 
 		printf("ARGS0 %s, ARGS1 %s, ARGS2 %s\n",args[0], args[1], args[2]);
+
+		// Switch statement for the different commands
 		switch(cmdMatch){
 			case 0:
 				//help
-				if (cmdMatch2 == cmdArrLen){
-					printf("%s",help(-1, cmdArrLen));
-				} else {
-					printf("%s",help(cmdMatch2, cmdArrLen));
-				}
-				printf("HELP COMMAND\n");
+				// call the help function and print its return
+				printf("%s", help(args, argc, cmdMatch));			
 				break;
 			case 1:
 				//version
@@ -130,13 +130,9 @@ void comhan()
 				break;
 			case 6:
 				//alias
-				if (cmdMatch2 > -1 && cmdMatch2 < cmdArrLen-1){
-					alias(*als, args[1], args[2]);
-					printf("SHOULD CHANGE ALIAS\n");
-					printf("CMD: %s, NEW ALIAS: %s\n",cmds[cmdMatch2], als[cmdMatch2]);
-				} else {
-					printf("Invalid alias assignment.\n");
-				}
+				alias(*als, args, cmdMatch);
+				// confirm it worked
+				printf("CMD: %s, NEW ALIAS: %s\n",cmds[cmdMatch], als[cmdMatch]);
 				break;
 			default:
 				printf("Invalid Command.\n");
@@ -144,7 +140,10 @@ void comhan()
 		}
 	} while (running == 1);
 };
+int matchCommand()
+{
 
+}
 int set_args(char *buffer, char *args[]){
 	static char seperators[5] = " =";
 	static int i;
