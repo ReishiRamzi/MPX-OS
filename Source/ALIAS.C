@@ -6,7 +6,9 @@
 
 #include "mpx.h"
 
-void alias (char *aliasArr[], int index, char newAlias){
+
+// takes a pointer to the alias array, the command number you wish to change, and a string for the new alias
+void alias (char *aliasArr[], int index, char newAlias[]){
     aliasArr[index] = newAlias;
     printf("IN ALIAS.C: %s", newAlias);
 }

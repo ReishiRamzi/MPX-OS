@@ -73,29 +73,28 @@ void comhan()
 		argc = set_args(buffer, args);
 		//printf("%s",args[0]);            // for debugging
 		// Switch statement for the different commands
-		cmdArrLen = sizeof(cmds) / sizeof(cmds[0]);
+		// number of commands already stored in argc (arguments count)
+		// length already stored in length - set in sys_reqc.c from sys_req()
+		//cmdArrLen = sizeof(cmds) / sizeof(cmds[0]);
 		cmdMatch = -1;
 		cmdMatch2 = -1;
+		// if there are arguments, i.e. the first argument is not null
 		if (args[0] != '\0'){
-		    for (i = 0; i < cmdArrLen; i++){
-				if (strcmp(args[0], cmds[i]) == 0){
-				    cmdMatch = i;
+			// and check our first argument against each possible command and alias
+			for (i = 0; i < 7; i++)
+			{
+				// if there's a match in cmds or als
+				if ((strcmp(args[0], cmds[i]) == 0) || (strcmp(args[0], als[i]) == 0))
+				{
+					//set the match flag
+					cmdMatch = i;
 				}
-				if (strcmp(args[0], als[i]) == 0){
-				    cmdMatch = i;
-				}
-		    }
+			}
 		}
-		if (args[1] != '\0'){
-		    for (i = 0; i < cmdArrLen; i++){
-				if (strcmp(args[1], cmds[i]) == 0){
-				    cmdMatch2 = i;
-				}
-		    }
-		}
+
 		printf("ARGS0 %s, ARGS1 %s, ARGS2 %s\n",args[0], args[1], args[2]);
-		switch(cmdMatch+1){
-			case 1:
+		switch(cmdMatch){
+			case 0:
 				//help
 				if (cmdMatch2 == cmdArrLen){
 					printf("%s",help(-1, cmdArrLen));
@@ -104,11 +103,11 @@ void comhan()
 				}
 				printf("HELP COMMAND\n");
 				break;
-			case 2:
+			case 1:
 				//version
 				printf("Current Version: %s\n",version());
 				break;
-			case 3:
+			case 2:
 				//date
 				if (args[1] != '\0'){
 				    upDate(args[1]);
@@ -116,23 +115,23 @@ void comhan()
 				    printf("Current Date: %s\n", getDate());
 				}
 				break;
-			case 4:
+			case 3:
 				//quit
 				printf("Shutting down MPX\n");
 				running = quit();
 				break;
-			case 5:
+			case 4:
 				//directory
 				printf("DIRECTORY COMMAND\n");
 				break;
-			case 6:
+			case 5:
 				//prompt
 				printf("PROMPT COMMAND\n");
 				break;
-			case 7:
+			case 6:
 				//alias
 				if (cmdMatch2 > -1 && cmdMatch2 < cmdArrLen-1){
-					alias(*als, cmdMatch2, args[2]);
+					alias(*als, args[1], args[2]);
 					printf("SHOULD CHANGE ALIAS\n");
 					printf("CMD: %s, NEW ALIAS: %s\n",cmds[cmdMatch2], als[cmdMatch2]);
 				} else {
