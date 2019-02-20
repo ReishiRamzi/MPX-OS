@@ -25,19 +25,20 @@
 #define MAXSIZE  20    /* Size of the directory array. */
 
 struct dirstruct {         /* Data type for a directory entry.        */
-	char dirnam[9];        /* The name of a .mpx file.         */
-	int  dirsiz;           /* The size of the file (in bytes). */
+	  char dirnam[9];         /* The name of a .mpx file.         */
+	  int  dirsiz;            /* The size of the file (in bytes). */
 };
 
 typedef struct dirstruct dir;  /* Use dir as the data typer name.     */
+
+
 
 /* Function prototypes. */
 
 void comhan(void);                    /* The MPX/OS command handler.  */
 void sys_req(int,int,char *,int *);   /* MPX system request function. */
 int  directory(dir *, int);           /* Support function to load the */
-					  /* directory array.            */
-int quit();
+				      /* directory array.             */
 
 /*
  *   Global variable EXTERN directives.
@@ -49,4 +50,4 @@ int quit();
  */
 
 extern dir direct[];  /* Array of directory entries -     see direct.c */
-
+

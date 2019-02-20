@@ -16,9 +16,6 @@ char buffer[BUF_SIZE];   /* Stores the command line.         */
 
 char prompt[20] = "mpx>";
 
-char *args[10];          // Array of pointers to cmd line args
-int argc;                // Stores count of args
-
 /*
  *   comhan()    This is the command handler for the MPX OS.
  *               It repeatedly prints a prompt, makes a system
@@ -31,34 +28,10 @@ int argc;                // Stores count of args
 
 void comhan()
 {
-	int running = 1;
-	do {
+    do {
 	printf("%s ",prompt);              /* Print a prompt.         */
 	length = BUF_SIZE;                 /* Reset length of buffer. */
 	sys_req(CON,READ,buffer,&length);  /* Request CON input       */
-	argc = set_args(buffer, args);
-	printf("%s",args[0]);
-	if (strcmp(args[0], "quit") == 0){
-		running = quit();
-	}
-	// for debugging
-	// running = 0;
-	} while (running == 1);
-};
 
-int set_args(char *buffer, char *args[]){
-	static char seperators[5] = " =";
-	static int i;
-
-	i = 0;
-
-	strlwr(buffer);
-
-	args[i] = strtok(buffer, seperators);
-
-	while (args[i] != '\0') {
-		args[++i] = strtok('\0', seperators);
-	}
-
-	return i;
-};
+    } while (1);
+}
