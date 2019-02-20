@@ -36,9 +36,9 @@ typedef struct dirstruct dir;  /* Use dir as the data typer name.     */
 void comhan(void);                    /* The MPX/OS command handler.  */
 void sys_req(int,int,char *,int *);   /* MPX system request function. */
 int  directory(dir *, int);           /* Support function to load the */
-					  /* directory array.            */
-int quit();
-
+					                  /* directory array.             */
+int quit();                           /* MPX quit function.           */
+char* version();                      /* Check current MPX version    */
 /*
  *   Global variable EXTERN directives.
  *
@@ -49,4 +49,3 @@ int quit();
  */
 
 extern dir direct[];  /* Array of directory entries -     see direct.c */
-

@@ -1,4 +1,3 @@
-
 /*  file:  main.c
  *
  *  This file contains the function main
@@ -20,4 +19,3 @@ int main()
 
     return 0;
 }
-

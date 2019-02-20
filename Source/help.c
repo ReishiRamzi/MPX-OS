@@ -20,16 +20,17 @@ char *helpList[] =
     "alias              - Assign string to command\n"
 };
 
-char help(int helpCmd, int numCmds){
-    char helpOut;
+char* help(int helpCmd, int numCmds){
+    char* helpOut;
+    int i;
     if (helpCmd > -1){
-        helpOut = helpList[helpCmd + 2];
+	helpOut = helpList[helpCmd + 2];
     } else {
-        strcpy(helpOut, helpList[0]);
-        for (int i = 1; i < (numCmds + 2); i++){
-            // concatenates each line of the list to helpOut
-            strcat(helpOut, helpList[i]);
-        }
+	strcpy(helpOut, helpList[0]);
+	for (i = 1; i < (numCmds + 2); i++){
+	    // concatenates each line of the list to helpOut
+	    strcat(helpOut, helpList[i]);
+	}
     }
 
     return helpOut;
