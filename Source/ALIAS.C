@@ -8,15 +8,14 @@
 
 
 // takes a pointer to the alias array, the arguments list, and the index of the command
-void alias (char *aliasArr[], char* args[], int index){
+void alias(char *aliasArray[], char *arguments[], int index)
+{
     // if either argument is null, invalid assignment
-    if (args[1] == '\0' || args[2] == '\0')
+    if (arguments[1] == '\0' || arguments[2] == '\0' || index == -1)
     {
-	    printf("Invalid alias assignment.\n");
-        return;
+	printf("Invalid alias assignment.%d\n", 0);
+	return;
     }
     // the alias is the third argument, i.e. alias copy cp sets cp as an alias for copy`
-    char* newAlias = args[2];
-    aliasArr[index] = newAlias;
-    printf("IN ALIAS.C: %s", newAlias);
+    aliasArray[index] = arguments[2];
 }

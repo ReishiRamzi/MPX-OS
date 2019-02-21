@@ -14,7 +14,7 @@
 int  length;             /* Length of the command line.      */
 char buffer[BUF_SIZE];   /* Stores the command line.         */
 
-char prompt[20] = "mpx>";
+char prompt[MAXSIZE] = "mpx>";
 
 char *args[10];          // Array of pointers to cmd line args
 int argc;                // Stores count of args
@@ -31,9 +31,7 @@ char *cmds[] =
 	"alias",
 	"\0"
 };
-// set number of commands...
-// TODO: make a function
-NUM_CMDS = 7;
+
 // Array of pointers to aliases for our commands
 char *als[] =
 {
@@ -59,49 +57,35 @@ char *als[] =
 
 void comhan()
 {
+	// flag for running - initialize to on = 1
 	int running = 1;
-	//int cmdArrLen;
+
+	// an index for the matched command
 	int cmdMatch;
-	//int cmdMatch2;
-	int i;
-	char returnPrint;
+	int numDirects;
+
 	do {
+		// initialize arguments to null
 		args[0] = '\0';
 		args[1] = '\0';
 		args[2] = '\0';
 		printf("%s ",prompt);              /* Print a prompt.         */
 		length = BUF_SIZE;                 /* Reset length of buffer. */
 		sys_req(CON,READ,buffer,&length);  /* Request CON input       */
+		// get number of arguments and set arguments
 		argc = set_args(buffer, args);
-		//printf("%s",args[0]);            // for debugging
-		// number of commands already stored in argc (arguments count)
-		// length already stored in length - set in sys_reqc.c from sys_req()
-		//cmdArrLen = sizeof(cmds) / sizeof(cmds[0]);
-		cmdMatch = -1;
-		//cmdMatch2 = -1;
-		// if there are arguments, i.e. the first argument is not null
-		if (args[0] != '\0'){
-			// and check our first argument against each possible command and alias
-			// TODO: 7 commands currently, should convert to variable
-			for (i = 0; i < NUM_CMDS; i++)
-			{
-				// if there's a match in cmds or als
-				if ((strcmp(args[0], cmds[i]) == 0) || (strcmp(args[0], als[i]) == 0))
-				{
-					//set the match flag to the index of the command
-					cmdMatch = i;
-				}
-			}
-		}
-
+		// match a command in the argument set
+		cmdMatch = matchCommand(args, 0);
+		// echo arguments
 		printf("ARGS0 %s, ARGS1 %s, ARGS2 %s\n",args[0], args[1], args[2]);
 
 		// Switch statement for the different commands
 		switch(cmdMatch){
 			case 0:
 				//help
+				help(args, argc, matchCommand(args, 1));
 				// call the help function and print its return
-				printf("%s", help(args, argc, cmdMatch));			
+				printf("%s", help(args, argc, cmdMatch));
 				break;
 			case 1:
 				//version
@@ -122,7 +106,10 @@ void comhan()
 				break;
 			case 4:
 				//directory
+				numDirects = directory(direct, MAXSIZE);
 				printf("DIRECTORY COMMAND\n");
+				printf("Number of files: %d\n", numDirects);
+
 				break;
 			case 5:
 				//prompt
@@ -130,20 +117,48 @@ void comhan()
 				break;
 			case 6:
 				//alias
-				alias(*als, args, cmdMatch);
-				// confirm it worked
-				printf("CMD: %s, NEW ALIAS: %s\n",cmds[cmdMatch], als[cmdMatch]);
+				alias(als, args, matchCommand(args,1));
 				break;
 			default:
+			// such as -1
 				printf("Invalid Command.\n");
 				break;
 		}
 	} while (running == 1);
 };
-int matchCommand()
+
+// returns the index of the command that matches command line arguments
+int matchCommand(char *array[], int index)
 {
+	int thisMatch = -1;
+	int i;
+
+	//printf("%s",args[0]);            // for debugging
+	// number of commands already stored in argc (arguments count)
+	// length already stored in length - set in sys_reqc.c from sys_req()
+	//cmdArrLen = sizeof(cmds) / sizeof(cmds[0]);
+	//cmdMatch2 = -1;
+	// if there are arguments, i.e. the first argument is not null
+	if (array[0] != '\0'){
+		// and check our first argument against each possible command and alias
+		// TODO: 7 commands currently, should convert to variable
+		for (i = 0; i < NUM_CMDS; i++)
+		{
+			// if there's a match in cmds or als
+			if ((strcmp(array[index], cmds[i]) == 0) || (strcmp(array[index], als[i]) == 0))
+			{
+				// set the match flag to the index of the command
+				thisMatch = i;
+				return thisMatch;
+			}
+		}
+	}
+	return thisMatch;
 
 }
+
+// takes a pointer to the desired buffer and a pointer to the array of arguments
+// fills arguments array with tokenized buffer input and returns number of arguments
 int set_args(char *buffer, char *args[]){
 	static char seperators[5] = " =";
 	static int i;
