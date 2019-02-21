@@ -1,11 +1,13 @@
-/*  file:  date.c
+/*  file:  prompt.c
  *
- * This file allows the user to check the current date as well as update
- * the date.
+ * This file allows the user to change the prompt
+ * of the operating system
  */
- 
+
 #include "mpx.h"
 
+// checks the prompt and returns the new prompt if it is in The
+// correct format
 char* changePrompt(char *currPrompt, char *argument[]){
 	char arg;
 	strcpy(arg,argument[1]);

@@ -6,6 +6,7 @@
 
 #include "mpx.h"
 
+// Returns 0 to quit the OS
 int quit(){
 	 return 0;
 }
