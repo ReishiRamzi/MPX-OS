@@ -20,17 +20,31 @@ char *helpList[] =
     "alias              - Assign string to command\n"
 };
 
-char help(int helpCmd, int numCmds){
-    char helpOut;
-    if (helpCmd > -1){
-        helpOut = helpList[helpCmd + 2];
-    } else {
-        strcpy(helpOut, helpList[0]);
-        for (int i = 1; i < (numCmds + 2); i++){
-            // concatenates each line of the list to helpOut
-            strcat(helpOut, helpList[i]);
-        }
+// takes a command to print help information about -
+// returns a string, if no command given returns all
+char* help(char* args, int argc, int cmdMatch){
+    char* helpOut;
+    int i;
+    // if number of arguments is greater than two, invalid
+    if (argc > 2)
+    {
+	printf("Too many arguments. Commands used: %d. Please use only one command. \n", argc);
+    }
+    else if(argc == 1)
+    {
+	for(i = 0; i < NUM_CMDS+2; i++)
+	{
+	    printf("%s", helpList[i]);
+	}
+    }
+    else
+    {
+	printf("%s",helpList[matchCommand(args,1)+2]);
+
     }
 
+    // if no argument print all help
+
+    // return our string
     return helpOut;
 }
