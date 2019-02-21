@@ -85,7 +85,7 @@ void comhan()
 				//help
 				help(args, argc, matchCommand(args, 1));
 				// call the help function and print its return
-				printf("%s", help(args, argc, cmdMatch));
+				// printf("%s", help(args, argc, cmdMatch));
 				break;
 			case 1:
 				//version

@@ -19,15 +19,20 @@
 	 if (i == 2 || i == 5){
 	     if (newDate[i] != '/'){
 		 true = 0;
+		 printf("** date argument error - %s is an invalid date.\n", newDate);
+		 break;
 	     }
 	 } else {
 	     if (isdigit(newDate[i]) == 0){
 		 true = 0;
+		 printf("** date argument error - %s is an invalid date.\n", newDate);
+		 break;
 	     }
 	 }
      }
      if (newDate[10] != '\0'){
 	 true = 0;
+	 printf("** date argument error - %s is an invalid date.\n", newDate);
      }
      if (true != 0){
 	 date = newDate;

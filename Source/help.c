@@ -34,12 +34,12 @@ char* help(char* args, int argc, int cmdMatch){
     {
 	for(i = 0; i < NUM_CMDS+2; i++)
 	{
-	    printf("%s", helpList[i]);
+	   printf("%s", helpList[i]);
 	}
     }
     else
     {
-	printf("%s",helpList[matchCommand(args,1)+2]);
+       printf("%s",helpList[matchCommand(args,1)+2]);
 
     }
 
