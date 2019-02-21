@@ -39,8 +39,9 @@ int  directory(dir *, int);           /* Support function to load the */
 					                  /* directory array.             */
 int quit();                           /* MPX quit function.           */
 char* version();                      /* Check current MPX version    */
-void alias(char *aliasArray[], char *arguments[], int index);		  /* make an alias for commands   */
-int matchCommand(char *array[], int index);
+void alias(char *aliasArray[], char *arguments[], int index); /* make an alias for commands */
+int matchCommand(char *array[], int index);  /* Takes an array of cmds and matches
+                                                command based on index   */
 char* changePrompt(char *currPrompt, char *args[]);
 /*
  *   Global variable EXTERN directives.

@@ -1,4 +1,9 @@
-
+/*  file:  date.c
+ *
+ * This file allows the user to check the current date as well as update
+ * the date.
+ */
+ 
 #include "mpx.h"
 
 char* changePrompt(char *currPrompt, char *argument[]){
