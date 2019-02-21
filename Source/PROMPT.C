@@ -9,10 +9,10 @@
 // checks the prompt and returns the new prompt if it is in The
 // correct format
 char* changePrompt(char *currPrompt, char *argument[]){
-	char arg;
+	char *arg;
 	strcpy(arg,argument[1]);
 	//printf("CPROMPT: %s, NPROMPT: %s\n",currPrompt, arg);
-	if (argument[1][10] == '\0'){
+	if (strlen(arg) < 10){
 		//printf("working\n");
 		return arg;
 	}

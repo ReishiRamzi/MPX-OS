@@ -157,7 +157,6 @@ int matchCommand(char *array[], int index)
 	return thisMatch;
 
 }
-
 // takes a pointer to the desired buffer and a pointer to the array of arguments
 // fills arguments array with tokenized buffer input and returns number of arguments
 int set_args(char *buffer, char *args[]){

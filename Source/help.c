@@ -14,7 +14,7 @@ char *helpList[] =
     "help [command]     - Print command help\n",
     "version            - MPX version number\n",
     "date [mm/dd/yy]    - View/change system date\n",
-    "stop               - Terminates MPX\n",
+	"quit               - Terminates MPX\n",
     "directory          - List .mpx files\n",
     "prompt=string      - Change MPX promt\n",
     "alias              - Assign string to command\n"
