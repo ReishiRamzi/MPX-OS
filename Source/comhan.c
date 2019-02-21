@@ -77,7 +77,7 @@ void comhan()
 		// match a command in the argument set
 		cmdMatch = matchCommand(args, 0);
 		// echo arguments
-		printf("ARGS0 %s, ARGS1 %s, ARGS2 %s\n",args[0], args[1], args[2]);
+		//printf("ARGS0 %s, ARGS1 %s, ARGS2 %s\n",args[0], args[1], args[2]);
 
 		// Switch statement for the different commands
 		switch(cmdMatch){
@@ -107,13 +107,14 @@ void comhan()
 			case 4:
 				//directory
 				numDirects = directory(direct, MAXSIZE);
-				printf("DIRECTORY COMMAND\n");
+				//printf("DIRECTORY COMMAND\n");
 				printf("Number of files: %d\n", numDirects);
-
 				break;
 			case 5:
 				//prompt
-				printf("PROMPT COMMAND\n");
+				strcpy(prompt,changePrompt(prompt, args));
+				//printf("AFTER: %s\n",prompt);
+				//printf("PROMPT COMMAND\n");
 				break;
 			case 6:
 				//alias
