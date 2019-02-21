@@ -29,12 +29,14 @@ char *cmds[] =
 	"directory",
 	"prompt",
 	"alias",
+	"show",
 	"\0"
 };
 
 // Array of pointers to aliases for our commands
 char *als[] =
 {
+	"   ",
 	"   ",
 	"   ",
 	"   ",
@@ -138,6 +140,9 @@ void comhan()
 				} else {
 					printf("Invalid alias assignment.\n");
 				}
+				break;
+			case 8:
+				// show
 				break;
 			default:
 				printf("Invalid Command.\n");
