@@ -23,7 +23,7 @@
 
 
 #define MAXSIZE  20    /* Size of the directory array. */
-static int NUM_CMDS = 7;
+static int NUM_CMDS = 7;   // REMEMBER TO CHANGE WHEN NEW CMDS ADDED
 struct dirstruct {         /* Data type for a directory entry.        */
 	char dirnam[9];        /* The name of a .mpx file.         */
 	int  dirsiz;           /* The size of the file (in bytes). */
@@ -39,9 +39,10 @@ int  directory(dir *, int);           /* Support function to load the */
 					                  /* directory array.             */
 int quit();                           /* MPX quit function.           */
 char* version();                      /* Check current MPX version    */
-void alias(char *aliasArray[], char *arguments[], int index);		  /* make an alias for commands   */
-int matchCommand(char *array[], int index);
-
+void alias(char *aliasArray[], char *arguments[], int index); /* make an alias for commands */
+int matchCommand(char *array[], int index);  /* Takes an array of cmds and matches
+                                                command based on index   */
+char* changePrompt(char *currPrompt, char *args[]);
 /*
  *   Global variable EXTERN directives.
  *
