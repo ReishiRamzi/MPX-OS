@@ -45,23 +45,23 @@ typedef struct dirstruct dir;  /* Use dir as the data typer name.     */
 /* MAX PCBS */
 #define MAX_PCBS 20
 
-struct pcbstruct {         /* Data type for a process control block */
-	struct pcbstruct *chain;         // points to next pcb in chain
-	struct pcbstruct *next;          // points to next pcb in queue
-	struct pcbstruct *prev;          // points to prev pcb in queue
-	char procname;             // name of process limited to 9 chars
-	int type;                 // Possible values: FREE (0),
-				  // SYSTEM_PROCESS (1), APPLICATION_PROCESS(2).
-	int priority;             // Range from -126 to +126 for app processes
-				  // and -128 to +127 for system processes.
-	int state;                // Possible values: READY (0), RUNNING(1),
-				  // BLOCKED (2).
-	int suspend;              // Possible values: NOT_SUSPENDED(0), SUSPENDED(1)
-	char *stack_ptr;          // Pointer to top of stack to be restored when
-				  // process will next be dispatched.
-	char *stack[400];         // Process stack area.
-	char loadaddr;            // Address of mem allocated for loading the proc.
-	char mem_size;            // Size of mem allocated for process.
+struct pcbstruct {           /* Data type for a process control block */
+	struct pcbstruct *chain; // points to next pcb in chain
+	struct pcbstruct *next;  // points to next pcb in queue
+	struct pcbstruct *prev;  // points to prev pcb in queue
+	char *procname[9];       // name of process limited to 9 chars
+	int type;               // Possible values: FREE (0),
+				             // SYSTEM_PROCESS (1), APPLICATION_PROCESS(2).
+	int priority;           // Range from -126 to +126 for app processes
+				             // and -128 to +127 for system processes.
+	int state;              // Possible values: READY (0), RUNNING(1),
+				  			 // BLOCKED (2).
+	int suspend;            // Possible values: NOT_SUSPENDED(0), SUSPENDED(1)
+	int *stack_ptr;          // Pointer to top of stack to be restored when
+				  			 // process will next be dispatched.
+	int *stack[400];         // Process stack area.
+	int loadaddr;            // Address of mem allocated for loading the proc.
+	int mem_size;            // Size of mem allocated for process.
 };
 
 typedef struct pcbstruct pcb; /* use pcb as the data type name for pcbstruct */
@@ -74,6 +74,7 @@ int  directory(dir *, int);           /* Support function to load the */
 					                  /* directory array.             */
 int quit();                           /* MPX quit function.           */
 char* version();                      /* Check current MPX version    */
+
 /*
  *   Global variable EXTERN directives.
  *
