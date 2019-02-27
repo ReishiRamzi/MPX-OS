@@ -49,18 +49,18 @@ struct pcbstruct {           /* Data type for a process control block */
 	struct pcbstruct *chain; // points to next pcb in chain
 	struct pcbstruct *next;  // points to next pcb in queue
 	struct pcbstruct *prev;  // points to prev pcb in queue
-	char *procname[9];       // name of process limited to 9 chars
+	char procname[9];       // name of process limited to 9 chars
 	int type;               // Possible values: FREE (0),
-				             // SYSTEM_PROCESS (1), APPLICATION_PROCESS(2).
+							 // SYSTEM_PROCESS (1), APPLICATION_PROCESS(2).
 	int priority;           // Range from -126 to +126 for app processes
-				             // and -128 to +127 for system processes.
+							 // and -128 to +127 for system processes.
 	int state;              // Possible values: READY (0), RUNNING(1),
-				  			 // BLOCKED (2).
+							 // BLOCKED (2).
 	int suspend;            // Possible values: NOT_SUSPENDED(0), SUSPENDED(1)
 	int *stack_ptr;          // Pointer to top of stack to be restored when
-				  			 // process will next be dispatched.
+							 // process will next be dispatched.
 	int *stack[400];         // Process stack area.
-	int loadaddr;            // Address of mem allocated for loading the proc.
+	struct pcbstruct *loadaddr;            // Address of mem allocated for loading the proc.
 	int mem_size;            // Size of mem allocated for process.
 };
 

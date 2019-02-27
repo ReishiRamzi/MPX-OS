@@ -23,7 +23,7 @@ pcb* Search_PCB(pcb *pcbPtr, char *pcbname[9]) {
     pcb *temp = pcbPtr;
     while (temp != '\0') {
         if (strcmp(temp->procname, pcbname) == 0) {
-            addr = temp->loadaddr;
+			addr = temp->loadaddr;
             break;
         }
         temp = temp->chain;
@@ -40,7 +40,7 @@ pcb* Get_PCB(pcb *pcbPtr) {
     pcb *temp = pcbPtr;
     while (temp != '\0') {
         if (temp->type == FREE) {
-            addr = temp->loadaddr;
+			addr = temp->loadaddr;
             break;
         }
         temp = temp->chain;
@@ -78,34 +78,33 @@ int Free_PCB(pcb *pcbListPtr, pcb *addr) {
 }
 
 /*
-    Checks that all parameters are valid and then applies them to PCBS
-    Return values:
-     1: PCB Completed
-    -1: Invalid PCB address in addr
-    -2: Invalid type
-    -3: Invalid state
-    -4: Invalid suspend
+	Checks that all parameters are valid and then applies them to PCBS
+	Return values:
+	 1: PCB Completed
+	-1: Invalid PCB address in addr
+	-2: Invalid type
+	-3: Invalid state
+	-4: Invalid suspend
 */
-int Build_PCB(pcb *addr, char name, int type, int state, int suspend) {
-    int returnInt = 0;
-    int addrCheck = 0;
-    pcb *temp = PCB_list;
-    while (temp != '\0') { // make sure the addr exists
-        if (strcmp(temp->loadaddr, addr) == 0) {
-            addrCheck = 1; // change to 1 if addr exists
-            break;
-        }
-        temp = temp->chain;
-    }
-    if (addrCheck == 1) {
-        if (suspend == 0 || suspend == 1) {
-            if (state > -1 && state < 3) {
-                if (type > -1 && type < 3) { // if all parameters are valid,
-                    temp->suspend = suspend; // theyre applied to the PCB
-                    temp->state = state;
-                    temp->type = type;
-                    temp->procname = name;
-                    //temp->procname = name;
+int Build_PCB(pcb *addr, char *name, int type, int state, int suspend) {
+	int returnInt = 0;
+	int addrCheck = 0;
+	pcb *temp = PCB_list;
+	while (temp != '\0') { // make sure the addr exists
+		if (strcmp(temp->loadaddr, addr) == 0) {
+			addrCheck = 1; // change to 1 if addr exists
+			break;
+		}
+		temp = temp->chain;
+	}
+	if (addrCheck == 1) {
+		if (suspend == 0 || suspend == 1) {
+			if (state > -1 && state < 3) {
+				if (type > -1 && type < 3) { // if all parameters are valid,
+					temp->suspend = suspend; // theyre applied to the PCB
+					temp->state = state;
+					temp->type = type;
+					strcpy(temp->procname, name);
                     returnInt = 1;
                 } else { // type is invalid
                     returnInt = -2;
@@ -236,7 +235,7 @@ void initPCBs() {
     pcb *pcb1;
     pcb *pcb2, *pcb3, *pcb4, *pcb5, *pcb6, *pcb7, *pcb8, *pcb9, *pcb10;
     pcb *pcb11, *pcb12, *pcb13, *pcb14, *pcb15, *pcb16, *pcb17, *pcb18, *pcb19, *pcb20;
-    PCB_list = &pcb1;
+	PCB_list = &pcb1;
     pcb1->chain = &pcb2;
     pcb2->chain = &pcb3;
     pcb3->chain = &pcb4;

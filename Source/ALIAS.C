@@ -6,7 +6,7 @@
 
 #include "mpx.h"
 
-void alias (char *aliasArr[], int index, char newAlias){
+void alias (char *aliasArr[], int index, char *newAlias){
     aliasArr[index] = newAlias;
     printf("IN ALIAS.C: %s", newAlias);
 }
