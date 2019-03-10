@@ -30,12 +30,16 @@ char *cmds[] =
 	"prompt",
 	"alias",
 	"show",
+	"allocate",
+	"free",
 	"\0"
 };
 
 // Array of pointers to aliases for our commands
 char *als[] =
 {
+	"   ",
+	"   ",
 	"   ",
 	"   ",
 	"   ",
@@ -62,9 +66,10 @@ void comhan()
 	int running = 1;
 	int cmdArrLen;
 	int cmdMatch;
-	int cmdMatch2;
+	int numDirects;
+	int returnInt;
 	int i;
-	char returnPrint;
+
 	do {
 		args[0] = '\0';
 		args[1] = '\0';
@@ -113,9 +118,9 @@ void comhan()
 			case 3:
 				//date
 				if (args[1] != '\0'){
-				    upDate(args[1]);
+					upDate(args[1]);
 				} else {
-				    printf("Current Date: %s\n", getDate());
+					printf("Current Date: %s\n", getDate());
 				}
 				break;
 			case 4:
@@ -141,8 +146,20 @@ void comhan()
 					printf("Invalid alias assignment.\n");
 				}
 				break;
-			case 8:
+			case 7:
 				// show
+				show(args[1]);
+				break;
+			case 8:
+				// allocate
+				for(i = 0; i < argc; i++){
+					printf("args %d: %s\n", i, args[i]);
+				}
+				returnInt = Allocate(args[1],args[2],args[3],args[4],args[5]);
+                printf("%d",returnInt);
+				break;
+			case 9:
+				// free
 				break;
 			default:
 				printf("Invalid Command.\n");
@@ -152,7 +169,7 @@ void comhan()
 };
 
 int set_args(char *buffer, char *args[]){
-	static char seperators[5] = " =";
+	static char seperators[5] = " =,";
 	static int i;
 
 	i = 0;
