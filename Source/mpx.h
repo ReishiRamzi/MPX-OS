@@ -22,7 +22,7 @@
 #define  SIGNAL 3  /* Semaphore V operation for device. */
 
 #define MAXSIZE  20    /* Size of the directory array. */
-static int NUM_CMDS = 7;   // REMEMBER TO CHANGE WHEN NEW CMDS ADDED
+static int NUM_CMDS = 10;   // REMEMBER TO CHANGE WHEN NEW CMDS ADDED
 struct dirstruct {         /* Data type for a directory entry.        */
 	char dirnam[9];        /* The name of a .mpx file.         */
 	int  dirsiz;           /* The size of the file (in bytes). */
@@ -33,8 +33,8 @@ typedef struct dirstruct dir;  /* Use dir as the data typer name.     */
 /* PCB definitions for type, state, and suspend */
 /* TYPE */
 #define FREE                0
-#define SYSTEM_PROCESS      1
-#define APPLICATION_PROCESS 2
+#define APPLICATION_PROCESS 1
+#define SYSTEM_PROCESS      2
 /* STATE */
 #define READY   0
 #define RUNNING 1
@@ -78,6 +78,19 @@ void alias(char *aliasArray[], char *arguments[], int index); /* make an alias f
 int matchCommand(char *array[], int index);  /* Takes an array of cmds and matches
                                                 command based on index   */
 char* changePrompt(char *currPrompt, char *args[]);
+/*
+*	PCB function prototypes
+*/
+int Allocate(char *name, char *type, char *state, char *suspend, char *priority);
+int Free(char *name);
+pcb* Get_PCB(pcb *pcbPtr);
+pcb* Search_PCB(pcb *pcbPtr, char *pcbname[9]);
+int Free_PCB(pcb *pcbListPtr, pcb *addr);
+int Build_PCB(pcb *addr, char *name, int type, int state, int suspend, int priority);
+int Insert_PCB(pcb *PCB_Q, pcb *addr, int method);
+int Remove_PCB(pcb *PCB_Q, pcb *addr);
+void show (char whatToShow[9]);
+int initPCBs();
 /*
  *   Global variable EXTERN directives.
  *

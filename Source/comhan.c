@@ -30,12 +30,16 @@ char *cmds[] =
 	"prompt",
 	"alias",
 	"show",
+	"allocate",
+	"free",
 	"\0"
 };
 
 // Array of pointers to aliases for our commands
 char *als[] =
 {
+	"   ",
+	"   ",
 	"   ",
 	"   ",
 	"   ",
@@ -96,9 +100,9 @@ void comhan()
 			case 2:
 				//date
 				if (args[1] != '\0'){
-				    upDate(args[1]);
+					upDate(args[1]);
 				} else {
-				    printf("Current Date: %s\n", getDate());
+					printf("Current Date: %s\n", getDate());
 				}
 				break;
 			case 3:
@@ -122,8 +126,20 @@ void comhan()
 				//alias
 				alias(als, args, matchCommand(args,1));
 				break;
-			case 8:
+			case 7:
 				// show
+				show(args[1]);
+				break;
+			case 8:
+				// allocate
+				for(i = 0; i < argc; i++){
+					printf("args %d: %s\n", i, args[i]);
+				}
+				returnInt = Allocate(args[1],args[2],args[3],args[4],args[5]);
+                printf("%d",returnInt);
+				break;
+			case 9:
+				// free
 				break;
 			default:
 			// such as -1
@@ -165,7 +181,7 @@ int matchCommand(char *array[], int index)
 // takes a pointer to the desired buffer and a pointer to the array of arguments
 // fills arguments array with tokenized buffer input and returns number of arguments
 int set_args(char *buffer, char *args[]){
-	static char seperators[5] = " =";
+	static char seperators[5] = " =,";
 	static int i;
 
 	i = 0;

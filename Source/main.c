@@ -11,12 +11,18 @@
 
 int main()
 {
-    printf("... booting MPX\n\n");
+	int i;
+	printf("... booting MPX\n\n");
 
-    /* Put initialization code here */
-    initPCBs();
+	/* Put initialization code here */
+	i = initPCBs();
+	if (i == 1){
+		printf("intitialized PCBs %d\n", i);
+	} else {
+		printf("whoops %d\n", i);
+	}
 
-    comhan();    /* Execute the command handler */
+	comhan();    /* Execute the command handler */
 
-    return 0;
+	return 0;
 }
