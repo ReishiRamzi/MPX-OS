@@ -14,6 +14,7 @@ int main()
     printf("... booting MPX\n\n");
 
     /* Put initialization code here */
+    initPCBs();
 
     comhan();    /* Execute the command handler */
 

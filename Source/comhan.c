@@ -29,12 +29,14 @@ char *cmds[] =
 	"directory",
 	"prompt",
 	"alias",
+	"show",
 	"\0"
 };
 
 // Array of pointers to aliases for our commands
 char *als[] =
 {
+	"   ",
 	"   ",
 	"   ",
 	"   ",
@@ -119,6 +121,9 @@ void comhan()
 			case 6:
 				//alias
 				alias(als, args, matchCommand(args,1));
+				break;
+			case 8:
+				// show
 				break;
 			default:
 			// such as -1
