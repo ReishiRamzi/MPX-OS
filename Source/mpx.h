@@ -100,5 +100,9 @@ int initPCBs();
  *       this header file.  The memory space for the variables
  *       is declared in a *.c file.
  */
+extern unsigned * sys_stack_ptr; /* Placeholder stack ptr outside of register */
 
+extern pcb * PCB_list; /* Pointer to first PCB */
+extern pcb * ReadyQ; /* Pointer to priority queue of PCBs */
+extern pcb * IO_InitQ; /* Pointer to FIFO queue of PCBS */
 extern dir direct[];  /* Array of directory entries -     see direct.c */
