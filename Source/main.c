@@ -12,6 +12,7 @@
 int main()
 {
 	int i;
+    //sys_stack_ptr = &sys_stack[STK_SIZE-1];
 	printf("... booting MPX\n\n");
 
 	/* Put initialization code here */

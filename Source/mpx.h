@@ -44,6 +44,8 @@ typedef struct dirstruct dir;  /* Use dir as the data typer name.     */
 #define SUSPENDED     1
 /* MAX PCBS */
 #define MAX_PCBS 20
+/* MAX STACK SIZE */
+#define STK_SIZE 400
 
 struct pcbstruct {           /* Data type for a process control block */
 	struct pcbstruct *chain; // points to next pcb in chain
@@ -59,7 +61,7 @@ struct pcbstruct {           /* Data type for a process control block */
 	int suspend;            // Possible values: NOT_SUSPENDED(0), SUSPENDED(1)
 	int *stack_ptr;          // Pointer to top of stack to be restored when
 							 // process will next be dispatched.
-	int *stack[400];         // Process stack area.
+	int *stack[STK_SIZE];         // Process stack area.
 	struct pcbstruct *loadaddr;            // Address of mem allocated for loading the proc.
     //^ change in the future
 	int mem_size;            // Size of mem allocated for process.
@@ -100,7 +102,8 @@ int initPCBs();
  *       this header file.  The memory space for the variables
  *       is declared in a *.c file.
  */
-extern unsigned * sys_stack_ptr; /* Placeholder stack ptr outside of register */
+extern unsigned * sys_stack[STK_SIZE]; /* Placeholder stack outside of register */
+extern unsigned * sys_stack_ptr;  /* Placeholder stack ptr outside of register */
 
 extern pcb * PCB_list; /* Pointer to first PCB */
 extern pcb * ReadyQ; /* Pointer to priority queue of PCBs */
