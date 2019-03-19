@@ -5,7 +5,7 @@
  *    sizes of the MPX/OS process files from the disk, and stores
  *    them in the directory entry array.
  */
-
+#include <stdio.h>
 #include <dos.h>        /* Borland header file */
 #include <fcntl.h>      /* Borland header file */
 #include <string.h>     /* Borland header file */
@@ -43,7 +43,7 @@ int directory(dir *direct, int dir_size)
   while (!done && num_procs < dir_size) {
       strcpy (filename,ffblk.ff_name);
       strcpy(direct->dirnam,filename);
-      direct->dirnam[strcspn(filename,".")] = '\0';
+      direct->dirnam[strcspn(filename,".")] = NULL;
       direct->dirsiz = ffblk.ff_fsize;
       ++num_procs;
       direct++;
@@ -52,4 +52,3 @@ int directory(dir *direct, int dir_size)
 
   return(num_procs);
 }
-

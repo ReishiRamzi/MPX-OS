@@ -3,7 +3,7 @@
  * This file allows the user to check the current date as well as update
  * the date.
  */
-
+ #include <stdio.h>
  #include "mpx.h"
 
 // default date.
@@ -34,9 +34,8 @@
     	     }
     	 }
      }
-     if (newDate[10] != '\0'){ // if the new date is the incorrect length
-    	 true = 0;
-    	 printf("** date argument error - %s is an invalid date.\n", newDate);
+     if (newDate[10] != NULL){
+	 true = 0;
      }
      if (true != 0){ // set date to newdate if true remained 1
     	 date = newDate;

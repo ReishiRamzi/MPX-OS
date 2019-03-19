@@ -4,7 +4,7 @@
  *  for the MPX Operating System - this is where
  *  the program's execution begins
  */
-
+#include <stdio.h>
 #include <stdio.h>
 #include "mpx.h"
 
