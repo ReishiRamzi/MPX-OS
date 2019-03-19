@@ -61,6 +61,7 @@ struct pcbstruct {           /* Data type for a process control block */
 							 // process will next be dispatched.
 	int *stack[400];         // Process stack area.
 	struct pcbstruct *loadaddr;            // Address of mem allocated for loading the proc.
+    //^ change in the future
 	int mem_size;            // Size of mem allocated for process.
 };
 

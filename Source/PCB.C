@@ -4,7 +4,7 @@
  *    This file contains the functions related to process control
  *    blocks.
  */
-
+#include <stdio.h>
 #include "mpx.h"
 
 #include "malloc.h"
@@ -78,12 +78,12 @@ int Allocate(char *name, char *type, char *state, char *suspend, char *priority)
 int Free(char *name)
 {
 	pcb *pcbToFree = Search_PCB(PCB_list, name);
-	if (pcbToFree != '\0'){
-		strcpy(pcbToFree->procname, '\0');
-		pcbToFree->type = '\0';
-		pcbToFree->priority = '\0';
-		pcbToFree->state = '\0';
-		pcbToFree->suspend = '\0';
+	if (pcbToFree != NULL){
+		strcpy(pcbToFree->procname, NULL);
+		pcbToFree->type = NULL;
+		pcbToFree->priority = NULL;
+		pcbToFree->state = NULL;
+		pcbToFree->suspend = NULL;
 	} else {
 		return 0;
 	}
@@ -94,9 +94,9 @@ int Free(char *name)
 	If the address isnt found (name doesnt exist), addr returns null (\0)
 */
 pcb* Search_PCB(pcb *pcbPtr, char *pcbname[9]) {
-	pcb *addr = '\0';
+	pcb *addr = NULL;
 	pcb *temp = pcbPtr;
-	while (temp != '\0') {
+	while (temp != NULL) {
 		if (strcmp(temp->procname, pcbname) == 0) {
 			addr = temp->loadaddr;
 			break;
@@ -111,9 +111,9 @@ pcb* Search_PCB(pcb *pcbPtr, char *pcbname[9]) {
 	If the address isnt found (no free pcbs), addr returns null (\0)
 */
 pcb* Get_PCB(pcb *pcbPtr) {
-	pcb *addr = '\0';
+	pcb *addr = NULL;
 	pcb *temp = pcbPtr;
-	while (temp != '\0') {
+	while (temp != NULL) {
 		if (temp->type == FREE) {
 			addr = temp->loadaddr;
 			break;
@@ -132,7 +132,7 @@ pcb* Get_PCB(pcb *pcbPtr) {
 int Free_PCB(pcb *pcbListPtr, pcb *addr) {
 	int returnInt = -1;
 	pcb *temp = pcbListPtr;
-	while (temp != '\0') {
+	while (temp != NULL) {
 		// look for the address that matches our search
 		if (strcmp(temp->loadaddr, addr) == 0) {
 			// already free
@@ -168,7 +168,7 @@ int Build_PCB(pcb *addr, char *name, int type, int state, int suspend, int prior
 	int count = 0;
 	pcb *temp = PCB_list;
 	printf("Entering Build_PCB\n");
-	while (temp != '\0') { // make sure the addr exists
+	while (temp != NULL) { // make sure the addr exists
 		printf("Count: %d\n", count);
 		if (count > 40){
 			break;
@@ -237,21 +237,21 @@ int Insert_PCB(pcb *PCB_Q, pcb *addr, int method) {
     int returnInt;
     pcb *temp = PCB_list;
     pcb *tempQ = PCB_Q;
-    while (temp != '\0') { // make sure the addr exists
+    while (temp != NULL) { // make sure the addr exists
         if (strcmp(temp->loadaddr, addr) == 0) {
             break;
         }
         temp = temp->chain;
     }
-    if (temp != '\0') {
+    if (temp != NULL) {
         if (method == 0) { // Insert into Priority Queue
-            if (PCB_Q == '\0') {
+            if (PCB_Q == NULL) {
                 PCB_Q = temp;
-                temp->next = '\0';
-                temp->prev = '\0';
+                temp->next = NULL;
+                temp->prev = NULL;
                 returnInt = 1; // PCB Inserted
             } else {
-                while (tempQ->prev != '\0' && tempQ->priority >= temp->priority) {
+                while (tempQ->prev != NULL && tempQ->priority >= temp->priority) {
                     tempQ = tempQ->prev;
                 }
                 tempQ->prev->next = temp;
@@ -260,17 +260,17 @@ int Insert_PCB(pcb *PCB_Q, pcb *addr, int method) {
                 tempQ->prev = temp;
             }
         } else if (method == 1) { // Insert at end of Queue
-            if (PCB_Q == '\0') {
+            if (PCB_Q == NULL) {
                 PCB_Q = temp;
-                temp->next = '\0';
-                temp->prev = '\0';
+                temp->next = NULL;
+                temp->prev = NULL;
                 returnInt = 1; // PCB Inserted
             } else {
-                while (tempQ->prev != '\0') {
+                while (tempQ->prev != NULL) {
                     tempQ = tempQ->prev;
                 }
                 temp->next = tempQ;
-                temp->prev = '\0';
+                temp->prev = NULL;
                 tempQ->prev = temp;
             }
         } else {
@@ -281,7 +281,7 @@ int Insert_PCB(pcb *PCB_Q, pcb *addr, int method) {
     }
     if (returnInt > 0) { // re-point to the front of the queue
         tempQ = PCB_Q;
-		while (tempQ->next != '\0') {
+		while (tempQ->next != NULL) {
             PCB_Q = tempQ->next;
         }
     }
@@ -297,23 +297,23 @@ int Insert_PCB(pcb *PCB_Q, pcb *addr, int method) {
 int Remove_PCB(pcb *PCB_Q, pcb *addr) {
     int returnInt;
     pcb *tempQ = PCB_Q;
-    while (tempQ != '\0') { // make sure the addr exists
+    while (tempQ != NULL) { // make sure the addr exists
         if (strcmp(tempQ->loadaddr, addr) == 0) {
             break;
         }
         tempQ = tempQ->prev;
     }
-    if (tempQ != '\0') {
-        if (tempQ->next == '\0') { // front of the queue
+    if (tempQ != NULL) {
+        if (tempQ->next == NULL) { // front of the queue
             PCB_Q = tempQ->prev;
-            tempQ->prev->next = '\0';
-            tempQ->prev = '\0';
+            tempQ->prev->next = NULL;
+            tempQ->prev = NULL;
             returnInt = 0;
         } else {
             tempQ->next->prev = tempQ->prev;
             tempQ->prev->next = tempQ->next;
-            tempQ->next = '\0';
-			tempQ->prev = '\0';
+            tempQ->next = NULL;
+			tempQ->prev = NULL;
 			returnInt = 0;
 		}
 	} else {
@@ -328,34 +328,34 @@ void show(char whatToShow[9]) {
 	printf("=====================================\n");
 	if (strcmp(whatToShow, "free") == 0) {
 		//printf("Printing all free PCBs\n");
-		while (temp != '\0' && temp->type == FREE){
+		while (temp != NULL && temp->type == FREE){
 			printf("%s     %d    %d     %d       \n", temp->procname,temp->type,temp->state,temp->suspend);
 			temp = temp->chain;
 		}
 	} else if (strcmp(whatToShow, "all") == 0) {
 		//printf("Printing all PCBs\n");
-		while (temp != '\0'){
+		while (temp != NULL){
 			if (temp->type == APPLICATION_PROCESS || temp->type == SYSTEM_PROCESS){
 				printf("%s     %d    %d     %d       \n", temp->procname,temp->type,temp->state,temp->suspend);
 			}
 			temp = temp->chain;
 		}
 	} else if (strcmp(whatToShow, "system") == 0){
-		while (temp != '\0'){
+		while (temp != NULL){
 			if (temp->type == SYSTEM_PROCESS){
 				printf("%s     %d    %d     %d       \n", temp->procname,temp->type,temp->state,temp->suspend);
 			}
 			temp = temp->chain;
 		}
 	} else if (strcmp(whatToShow, "application") == 0){
-		while (temp != '\0'){
+		while (temp != NULL){
 			if (temp->type == APPLICATION_PROCESS){
 				printf("%s     %d    %d     %d       \n", temp->procname,temp->type,temp->state,temp->suspend);
 			}
 			temp = temp->chain;
 		}
 	} else if (strcmp(whatToShow, "suspended") == 0){
-		while (temp != '\0'){
+		while (temp != NULL){
 			if (temp->suspend == SUSPENDED){
 				printf("%s     %d    %d     %d       \n", temp->procname,temp->type,temp->state,temp->suspend);
 			}
@@ -363,13 +363,13 @@ void show(char whatToShow[9]) {
 		}
 	} else if (strcmp(whatToShow, "ready") == 0){
 		temp = ReadyQ;
-		while (temp != '\0'){
+		while (temp != NULL){
 			printf("%s     %d    %d     %d       \n", temp->procname,temp->type,temp->state,temp->suspend);
 			temp = temp->chain;
 		}
 	} else if (strcmp(whatToShow, "init") == 0){
 		temp = IO_InitQ;
-		while (temp != '\0'){
+		while (temp != NULL){
 			printf("%s     %d    %d     %d       \n", temp->procname,temp->type,temp->state,temp->suspend);
 			temp = temp->chain;
 		}
@@ -377,64 +377,47 @@ void show(char whatToShow[9]) {
 }
 
 int initPCBs(){
-	pcb *pcb1 = malloc(sizeof(pcb));
-	pcb *pcb2 = malloc(sizeof(pcb));
-	pcb *pcb3 = malloc(sizeof(pcb));
-	pcb *pcb4 = malloc(sizeof(pcb));
-	pcb *pcb5 = malloc(sizeof(pcb));
-	pcb *pcb6 = malloc(sizeof(pcb));
-	pcb *pcb7 = malloc(sizeof(pcb));
-	pcb *pcb8 = malloc(sizeof(pcb));
-	pcb *pcb9 = malloc(sizeof(pcb));
-	pcb *pcb10 = malloc(sizeof(pcb));
-	pcb *pcb11 = malloc(sizeof(pcb));
-	pcb *pcb12 = malloc(sizeof(pcb));
-	pcb *pcb13 = malloc(sizeof(pcb));
-	pcb *pcb14 = malloc(sizeof(pcb));
-	pcb *pcb15 = malloc(sizeof(pcb));
-	pcb *pcb16 = malloc(sizeof(pcb));
-	pcb *pcb17 = malloc(sizeof(pcb));
-	pcb *pcb18 = malloc(sizeof(pcb));
-	pcb *pcb19 = malloc(sizeof(pcb));
-	pcb *pcb20 = malloc(sizeof(pcb));
-	PCB_list = pcb1;
-	pcb1->chain = pcb2;
-	pcb2->chain = pcb3;
-	pcb3->chain = pcb4;
-	pcb4->chain = pcb5;
-	pcb5->chain = pcb6;
-	pcb6->chain = pcb7;
-	pcb7->chain = pcb8;
-	pcb9->chain = pcb10;
-	pcb10->chain = pcb11;
-	pcb11->chain = pcb12;
-	pcb12->chain = pcb13;
-	pcb13->chain = pcb14;
-	pcb14->chain = pcb15;
-	pcb15->chain = pcb16;
-	pcb16->chain = pcb17;
-	pcb17->chain = pcb18;
-	pcb18->chain = pcb19;
-	pcb19->chain = pcb20;
-	pcb20->chain = '\0';
-	pcb1->type = FREE;
-	pcb2->type = FREE;
-	pcb3->type = FREE;
-	pcb4->type = FREE;
-	pcb5->type = FREE;
-	pcb6->type = FREE;
-	pcb7->type = FREE;
-	pcb9->type = FREE;
-	pcb10->type = FREE;
-	pcb11->type = FREE;
-	pcb12->type = FREE;
-	pcb13->type = FREE;
-	pcb14->type = FREE;
-	pcb15->type = FREE;
-	pcb16->type = FREE;
-	pcb17->type = FREE;
-	pcb18->type = FREE;
-	pcb19->type = FREE;
+    pcb pcb1, pcb2, pcb3, pcb4, pcb5, pcb6, pcb7, pcb8, pcb9, pcb10;
+    pcb pcb11, pcb12, pcb13, pcb14, pcb15, pcb16, pcb17, pcb18, pcb19, pcb20;
+    PCB_list = &pcb1;
+    pcb1.chain = &pcb2;
+	pcb1.chain = &pcb2;
+	pcb2.chain = &pcb3;
+	pcb3.chain = &pcb4;
+	pcb4.chain = &pcb5;
+	pcb5.chain = &pcb6;
+	pcb6.chain = &pcb7;
+	pcb7.chain = &pcb8;
+	pcb9.chain = &pcb10;
+	pcb10.chain = &pcb11;
+	pcb11.chain = &pcb12;
+	pcb12.chain = &pcb13;
+	pcb13.chain = &pcb14;
+	pcb14.chain = &pcb15;
+	pcb15.chain = &pcb16;
+	pcb16.chain = &pcb17;
+	pcb17.chain = &pcb18;
+	pcb18.chain = &pcb19;
+	pcb19.chain = &pcb20;
+	pcb20.chain = NULL;
+	pcb1.type = FREE;
+	pcb2.type = FREE;
+	pcb3.type = FREE;
+	pcb4.type = FREE;
+	pcb5.type = FREE;
+	pcb6.type = FREE;
+	pcb7.type = FREE;
+	pcb9.type = FREE;
+	pcb10.type = FREE;
+	pcb11.type = FREE;
+	pcb12.type = FREE;
+	pcb13.type = FREE;
+	pcb14.type = FREE;
+	pcb15.type = FREE;
+	pcb16.type = FREE;
+	pcb17.type = FREE;
+	pcb18.type = FREE;
+	pcb19.type = FREE;
 
 /*
 	pcb *pcb1;
@@ -462,7 +445,7 @@ int initPCBs(){
 	pcb17->chain = &pcb18;
 	pcb18->chain = &pcb19;
 	pcb19->chain = &pcb20;
-	pcb20->chain = '\0';
+	pcb20->chain = NULL;
 	printf("assigned chains\n");
  */
 	return 1;

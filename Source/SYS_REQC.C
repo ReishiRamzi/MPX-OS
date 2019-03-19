@@ -20,7 +20,7 @@
  *    read from the console (keyboard).  This is done using
  *    the standard C function gets().
  */
-
+#include <stdio.h>
 
 void sys_req(int number, int type, char *s, int *length)
 {
@@ -29,4 +29,3 @@ void sys_req(int number, int type, char *s, int *length)
     gets(s);                /* Read a string from the keyboard.       */
     *length = strlen(s);    /* Get its length.                        */
 };
-

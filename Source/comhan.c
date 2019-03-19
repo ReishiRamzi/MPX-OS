@@ -71,9 +71,9 @@ void comhan()
 	int i;
 
 	do {
-		args[0] = '\0';
-		args[1] = '\0';
-		args[2] = '\0';
+		args[0] = NULL;
+		args[1] = NULL;
+		args[2] = NULL;
 		printf("%s ",prompt);              /* Print a prompt.         */
 		length = BUF_SIZE;                 /* Reset length of buffer. */
 		sys_req(CON,READ,buffer,&length);  /* Request CON input       */
@@ -83,7 +83,7 @@ void comhan()
 		cmdArrLen = sizeof(cmds) / sizeof(cmds[0]);
 		cmdMatch = -1;
 		cmdMatch2 = -1;
-		if (args[0] != '\0'){
+		if (args[0] != NULL){
 		    for (i = 0; i < cmdArrLen; i++){
 				if (strcmp(args[0], cmds[i]) == 0){
 				    cmdMatch = i;
@@ -93,7 +93,7 @@ void comhan()
 				}
 		    }
 		}
-		if (args[1] != '\0'){
+		if (args[1] != NULL){
 		    for (i = 0; i < cmdArrLen; i++){
 				if (strcmp(args[1], cmds[i]) == 0){
 				    cmdMatch2 = i;
@@ -117,7 +117,7 @@ void comhan()
 				break;
 			case 3:
 				//date
-				if (args[1] != '\0'){
+				if (args[1] != NULL){
 					upDate(args[1]);
 				} else {
 					printf("Current Date: %s\n", getDate());
@@ -178,8 +178,8 @@ int set_args(char *buffer, char *args[]){
 
 	args[i] = strtok(buffer, seperators);
 
-	while (args[i] != '\0') {
-		args[++i] = strtok('\0', seperators);
+	while (args[i] != NULL) {
+		args[++i] = strtok(NULL, seperators);
 	}
 
 	return i;

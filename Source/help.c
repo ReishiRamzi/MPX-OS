@@ -4,7 +4,7 @@
     This file contains the function that returns a synopsis of the various commands in the command
     handler.
 */
-
+#include <stdio.h>
 #include "mpx.h"
 
 char *helpList[] =
