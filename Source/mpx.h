@@ -22,6 +22,7 @@
 #define  SIGNAL 3  /* Semaphore V operation for device. */
 
 #define MAXSIZE  20    /* Size of the directory array. */
+
 static int NUM_CMDS = 10;   // REMEMBER TO CHANGE WHEN NEW CMDS ADDED
 struct dirstruct {         /* Data type for a directory entry.        */
 	char dirnam[9];        /* The name of a .mpx file.         */
@@ -47,6 +48,14 @@ typedef struct dirstruct dir;  /* Use dir as the data typer name.     */
 /* MAX STACK SIZE */
 #define STK_SIZE 400
 
+/* Stack locations for registers  */
+#define STACK_PSW (STK_SIZE - 1)
+#define STACK_CS (STK_SIZE - 2)
+#define STACK_IP (STK_SIZE - 3)
+#define STACK_DS (STK_SIZE - 9)
+#define INIT_STACK (STK_SIZE - 12)
+#define INT_ENABLE 0x200
+
 struct pcbstruct {           /* Data type for a process control block */
 	struct pcbstruct *chain; // points to next pcb in chain
 	struct pcbstruct *next;  // points to next pcb in queue
@@ -59,11 +68,12 @@ struct pcbstruct {           /* Data type for a process control block */
 	int state;              // Possible values: READY (0), RUNNING(1),
 							 // BLOCKED (2).
 	int suspend;            // Possible values: NOT_SUSPENDED(0), SUSPENDED(1)
+	int parm_add;
 	int *stack_ptr;          // Pointer to top of stack to be restored when
 							 // process will next be dispatched.
 	int *stack[STK_SIZE];         // Process stack area.
 	struct pcbstruct *loadaddr;            // Address of mem allocated for loading the proc.
-    //^ change in the future
+	//^ change in the future
 	int mem_size;            // Size of mem allocated for process.
 };
 
@@ -84,16 +94,19 @@ char* changePrompt(char *currPrompt, char *args[]);
 /*
 *	PCB function prototypes
 */
-int Allocate(char *name, char *type, char *state, char *suspend, char *priority);
+int Allocate(char *name, char *type, char *state, char *suspend, char *priority, char *prog);
 int Free(char *name);
 pcb* Get_PCB(pcb *pcbPtr);
 pcb* Search_PCB(pcb *pcbPtr, char *pcbname[9]);
 int Free_PCB(pcb *pcbListPtr, pcb *addr);
-int Build_PCB(pcb *addr, char *name, int type, int state, int suspend, int priority);
+int Build_PCB(pcb *addr, char *name, int type, int state, int suspend, int priority, unsigned * cs, unsigned * prog);
 int Insert_PCB(pcb *PCB_Q, pcb *addr, int method);
 int Remove_PCB(pcb *PCB_Q, pcb *addr);
 void show (char whatToShow[9]);
 int initPCBs();
+void test1(void);
+
+void interrupt sys_call();
 /*
  *   Global variable EXTERN directives.
  *
@@ -109,3 +122,4 @@ extern pcb * PCB_list; /* Pointer to first PCB */
 extern pcb * ReadyQ; /* Pointer to priority queue of PCBs */
 extern pcb * IO_InitQ; /* Pointer to FIFO queue of PCBS */
 extern dir direct[];  /* Array of directory entries -     see direct.c */
+extern pcb * cop;    /* Currently Operating Process - SYS_SPPT.c */

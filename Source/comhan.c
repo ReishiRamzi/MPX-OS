@@ -69,6 +69,8 @@ void comhan()
 	// an index for the matched command
 	int cmdMatch;
 	int numDirects;
+	int i;
+	int returnInt;
 
 	do {
 		args[0] = NULL;
@@ -76,7 +78,7 @@ void comhan()
 		args[2] = NULL;
 		printf("%s ",prompt);              /* Print a prompt.         */
 		length = BUF_SIZE;                 /* Reset length of buffer. */
-		sys_req(CON,READ,buffer,&length);  /* Request CON input       */
+		sys_reqc(CON,READ,buffer,&length);  /* Request CON input       */
 		// get number of arguments and set arguments
 		argc = set_args(buffer, args);
 		// match a command in the argument set
@@ -134,11 +136,13 @@ void comhan()
 				for(i = 0; i < argc; i++){
 					printf("args %d: %s\n", i, args[i]);
 				}
-				returnInt = Allocate(args[1],args[2],args[3],args[4],args[5]);
-                printf("%d",returnInt);
+				returnInt = Allocate(args[1],args[2],args[3],args[4],args[5],args[6]);
+				printf("%d",returnInt);
 				break;
 			case 9:
 				// free
+				returnInt = Free(args[1]);
+				printf("%d",returnInt);
 				break;
 			default:
 			// such as -1

@@ -22,7 +22,7 @@
  */
 #include <stdio.h>
 
-void sys_req(int number, int type, char *s, int *length)
+void sys_reqc(int number, int type, char *s, int *length)
 {
 	number = number;
 	type = type;
