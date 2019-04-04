@@ -100,11 +100,15 @@ pcb* Get_PCB(pcb *pcbPtr);
 pcb* Search_PCB(pcb *pcbPtr, char *pcbname[9]);
 int Free_PCB(pcb *pcbListPtr, pcb *addr);
 int Build_PCB(pcb *addr, char *name, int type, int state, int suspend, int priority, unsigned * cs, unsigned * prog);
-int Insert_PCB(pcb *PCB_Q, pcb *addr, int method);
-int Remove_PCB(pcb *PCB_Q, pcb *addr);
+int Insert_PCB(pcb **PCB_Q, pcb *addr, int method);
+int Remove_PCB(pcb **PCB_Q, pcb *addr);
 void show (char whatToShow[9]);
 int initPCBs();
 void test1(void);
+void test2(void);
+void test3(void);
+void test4(void);
+void test5(void);
 
 void interrupt sys_call();
 /*

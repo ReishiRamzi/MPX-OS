@@ -25,7 +25,8 @@ pcb * cop;
 //void interrupt (*sys_call)();
 unsigned * sys_stack[STK_SIZE];
 
-void interrupt (*vect60)();  /* Storage for DOS int 60h */
+void interrupt (*vect60)();  /* Storage for DOS int 60
+h */
 							 /* interrupt vector.       */
 
 void sys_init()
@@ -49,6 +50,16 @@ void sys_exit()
 void interrupt dispatch()
 {
  /* your dispatcher code */
+	pcb * ptr;
+	if (cop != NULL){
+		Insert_PCB(&ReadyQ,cop,0);
+	} else if (ReadyQ == NULL) {
+		sys_exit();
+		exit();
+	}
+	ptr = ReadyQ;
+	Remove_PCB(&ReadyQ, ptr);
+	_SP = ptr->stack_ptr;
 }
 
 
@@ -61,7 +72,7 @@ void interrupt sys_call()
 		int *length;
 	};
 
-	struct parm *parm_add;
+	static struct parm *parm_add;
 
 	/* Save stack pointer for current process */
 	cop->stack_ptr = _SP;
@@ -75,5 +86,11 @@ void interrupt sys_call()
 
 	/* Switch to our system stack to avoid contaminating a process's stack  */
 	_SP = &sys_stack[STK_SIZE - 1];
+
+	if (parm_add != 0){
+		Insert_PCB(&ReadyQ, cop, 0);
+		cop->state = READY;
+	}
+	cop = NULL;
 
 }

@@ -19,17 +19,34 @@ int main()
 	/* Put initialization code here */
 	i = initPCBs();
 	if (i == 1){
-		printf("intitialized PCBs %d\n", i);
+		printf("(Main) Intitialized PCBs %d\n");
 	} else {
-		printf("whoops %d\n", i);
+		printf("(Main) Failed to initialize PCBs %d\n");
 	}
 
 	pcb_add = Get_PCB(PCB_list);
 	Build_PCB(pcb_add, "test1", APPLICATION_PROCESS, READY, NOT_SUSPENDED, 43, (unsigned *) _CS, (unsigned *) test1);
 	Insert_PCB(&ReadyQ,pcb_add,0);
-	//temp->stack[STACK_PSW] = INT_ENABLE;
-	//temp->stack[STACK_CS] = _CS;
-	//temp->stack[STACK_IP] = &test1;
+
+	pcb_add = Get_PCB(PCB_list);
+	Build_PCB(pcb_add, "test2", APPLICATION_PROCESS, READY, NOT_SUSPENDED, 43, (unsigned *) _CS, (unsigned *) test2);
+	Insert_PCB(&ReadyQ,pcb_add,0);
+
+	pcb_add = Get_PCB(PCB_list);
+	Build_PCB(pcb_add, "test3", APPLICATION_PROCESS, READY, NOT_SUSPENDED, 43, (unsigned *) _CS, (unsigned *) test3);
+	Insert_PCB(&ReadyQ,pcb_add,0);
+
+	pcb_add = Get_PCB(PCB_list);
+	Build_PCB(pcb_add, "test4", APPLICATION_PROCESS, READY, NOT_SUSPENDED, 43, (unsigned *) _CS, (unsigned *) test4);
+	Insert_PCB(&ReadyQ,pcb_add,0);
+
+	pcb_add = Get_PCB(PCB_list);
+	Build_PCB(pcb_add, "test5", APPLICATION_PROCESS, READY, NOT_SUSPENDED, 45, (unsigned *) _CS, (unsigned *) test5);
+	Insert_PCB(&ReadyQ,pcb_add,0);
+
+	sys_init();
+	dispatch();
+
 	comhan();    /* Execute the command handler */
 
 	return 0;
