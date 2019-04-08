@@ -49,17 +49,30 @@ void sys_exit()
 
 void interrupt dispatch()
 {
- /* your dispatcher code */
 	pcb * ptr;
+	
+	// if there is a currently operating process,
 	if (cop != NULL){
-		Insert_PCB(&ReadyQ,cop,0);
+		// put it back in the ready queue
+		Insert_PCB(&ReadyQ, cop, 0);
+	
 	} else if (ReadyQ == NULL) {
+		// otherwise, restore vector table and exit
 		sys_exit();
 		exit();
 	}
+
+	// point to front of ready queue
 	ptr = ReadyQ;
+
+	// dequeue
 	Remove_PCB(&ReadyQ, ptr);
+
+	// point _SP to dequeued stack pointer
 	_SP = ptr->stack_ptr;
+
+	// this is now the current process
+	cop = ptr;
 }
 
 

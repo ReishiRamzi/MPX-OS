@@ -10,9 +10,9 @@
 pcb * PCB_list; /* Pointer to first PCB */
 pcb * ReadyQ;   /* Pointer to priority queue of PCBs */
 pcb * IO_InitQ; /* Pointer to FIFO queue of PCBS */
-int numPCBs = 20;
+
 /*
-	Set uppcbs and test procedures
+	Set up pcbs and test procedures
 	assigns variables for PCB
 */
 int Allocate(char *name, char *type, char *state, char *suspend, char *priority, char *prog)
@@ -35,6 +35,7 @@ int Allocate(char *name, char *type, char *state, char *suspend, char *priority,
 		return 0;
 	}
 	printf("success type\n");
+
 	//CHECK STATE
 	if (strcmp(state, "r") == 0){
 		intState = READY;
@@ -47,6 +48,7 @@ int Allocate(char *name, char *type, char *state, char *suspend, char *priority,
 		return 0;
 	}
 	printf("success state\n");
+
 	// CHECK SUSPEND
 	if (strcmp(suspend, "n") == 0){
 		intSuspend = NOT_SUSPENDED;
@@ -70,8 +72,10 @@ int Allocate(char *name, char *type, char *state, char *suspend, char *priority,
 	pcbStatus = Build_PCB(nextPCB, name, intType, intState, intSuspend, intPriority, (unsigned *) _CS, (unsigned *) prog);
 	return pcbStatus;
 }
+
 /*
 	frees pcb
+	returns 1 on success
 */
 int Free(char *name)
 {
@@ -89,6 +93,7 @@ int Free(char *name)
 	}
 	return 1;
 }
+
 /*
 	Returns the address of a pcb with the name of pcbname[9].
 	If the address isnt found (name doesnt exist), addr returns null (\0)
@@ -379,9 +384,14 @@ void show(char whatToShow[9]) {
 }
 
 int initPCBs(){
+	// declare 20 pcb's
 	pcb pcb1, pcb2, pcb3, pcb4, pcb5, pcb6, pcb7, pcb8, pcb9, pcb10;
 	pcb pcb11, pcb12, pcb13, pcb14, pcb15, pcb16, pcb17, pcb18, pcb19, pcb20;
+
+	// PCB_list points to the first pcb in the chain - pcb1
 	PCB_list = &pcb1;
+
+	// chain pcb's together
 	pcb1.chain = &pcb2;
 	pcb1.chain = &pcb2;
 	pcb2.chain = &pcb3;
@@ -403,6 +413,8 @@ int initPCBs(){
 	pcb18.chain = &pcb19;
 	pcb19.chain = &pcb20;
 	pcb20.chain = NULL;
+
+	// initialize state to free
 	pcb1.type = FREE;
 	pcb2.type = FREE;
 	pcb3.type = FREE;
@@ -422,35 +434,5 @@ int initPCBs(){
 	pcb18.type = FREE;
 	pcb19.type = FREE;
 
-/*
-	pcb *pcb1;
-	pcb *pcb2, *pcb3, *pcb4, *pcb5, *pcb6, *pcb7, *pcb8, *pcb9, *pcb10;
-	pcb *pcb11, *pcb12, *pcb13, *pcb14, *pcb15, *pcb16, *pcb17, *pcb18, *pcb19, *pcb20;
-	printf("made pcbs\n");
-	PCB_list = &pcb1;
-	printf("assigned list\n");
-	pcb1->chain = &pcb2;
-	pcb2->chain = &pcb3;
-	pcb3->chain = &pcb4;
-	pcb4->chain = &pcb5;
-	pcb5->chain = &pcb6;
-	pcb6->chain = &pcb7;
-	pcb7->chain = &pcb8;
-	pcb8->chain = &pcb9;
-	pcb9->chain = &pcb10;
-	pcb10->chain = &pcb11;
-	pcb11->chain = &pcb12;
-	pcb12->chain = &pcb13;
-	pcb13->chain = &pcb14;
-	pcb14->chain = &pcb15;
-	pcb15->chain = &pcb16;
-	pcb16->chain = &pcb17;
-	pcb17->chain = &pcb18;
-	pcb18->chain = &pcb19;
-	pcb19->chain = &pcb20;
-	pcb20->chain = NULL;
-	printf("assigned chains\n");
- */
 	return 1;
-
 }
