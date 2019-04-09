@@ -25,8 +25,7 @@ pcb * cop;
 //void interrupt (*sys_call)();
 unsigned * sys_stack[STK_SIZE];
 
-void interrupt (*vect60)();  /* Storage for DOS int 60
-h */
+void interrupt (*vect60)();  /* Storage for DOS int 60h */
 							 /* interrupt vector.       */
 
 void sys_init()
@@ -49,30 +48,18 @@ void sys_exit()
 
 void interrupt dispatch()
 {
-	pcb * ptr;
-	
-	// if there is a currently operating process,
-	if (cop != NULL){
-		// put it back in the ready queue
-		Insert_PCB(&ReadyQ, cop, 0);
-	
-	} else if (ReadyQ == NULL) {
-		// otherwise, restore vector table and exit
+ /* your dispatcher code */
+   //	pcb * ptr;
+
+	cop = ReadyQ;
+	if (cop == NULL){
 		sys_exit();
 		exit();
 	}
+	Remove_PCB(&ReadyQ, cop);
+	cop->state = RUNNING;
+	_SP = cop->stack_ptr;
 
-	// point to front of ready queue
-	ptr = ReadyQ;
-
-	// dequeue
-	Remove_PCB(&ReadyQ, ptr);
-
-	// point _SP to dequeued stack pointer
-	_SP = ptr->stack_ptr;
-
-	// this is now the current process
-	cop = ptr;
 }
 
 
@@ -100,10 +87,12 @@ void interrupt sys_call()
 	/* Switch to our system stack to avoid contaminating a process's stack  */
 	_SP = &sys_stack[STK_SIZE - 1];
 
-	if (parm_add != 0){
+	if (parm_add->op_number != EXIT_CODE){
 		Insert_PCB(&ReadyQ, cop, 0);
 		cop->state = READY;
+	} else {
+		cop = cop;
 	}
 	cop = NULL;
-
+	dispatch();
 }

@@ -104,6 +104,9 @@ int Insert_PCB(pcb **PCB_Q, pcb *addr, int method);
 int Remove_PCB(pcb **PCB_Q, pcb *addr);
 void show (char whatToShow[9]);
 int initPCBs();
+void interrupt dispatch();
+void interrupt sys_call();
+
 void test1(void);
 void test2(void);
 void test3(void);
