@@ -30,12 +30,16 @@ char *cmds[] =
 	"prompt",
 	"alias",
 	"show",
+	"allocate",
+	"free",
 	"\0"
 };
 
 // Array of pointers to aliases for our commands
 char *als[] =
 {
+	"   ",
+	"   ",
 	"   ",
 	"   ",
 	"   ",
@@ -65,15 +69,16 @@ void comhan()
 	// an index for the matched command
 	int cmdMatch;
 	int numDirects;
+	int i;
+	int returnInt;
 
 	do {
-		// initialize arguments to null
-		args[0] = '\0';
-		args[1] = '\0';
-		args[2] = '\0';
+		args[0] = NULL;
+		args[1] = NULL;
+		args[2] = NULL;
 		printf("%s ",prompt);              /* Print a prompt.         */
 		length = BUF_SIZE;                 /* Reset length of buffer. */
-		sys_req(CON,READ,buffer,&length);  /* Request CON input       */
+		sys_reqc(CON,READ,buffer,&length);  /* Request CON input       */
 		// get number of arguments and set arguments
 		argc = set_args(buffer, args);
 		// match a command in the argument set
@@ -95,10 +100,10 @@ void comhan()
 				break;
 			case 2:
 				//date
-				if (args[1] != '\0'){
-				    upDate(args[1]);
+				if (args[1] != NULL){
+					upDate(args[1]);
 				} else {
-				    printf("Current Date: %s\n", getDate());
+					printf("Current Date: %s\n", getDate());
 				}
 				break;
 			case 3:
@@ -122,8 +127,22 @@ void comhan()
 				//alias
 				alias(als, args, matchCommand(args,1));
 				break;
-			case 8:
+			case 7:
 				// show
+				show(args[1]);
+				break;
+			case 8:
+				// allocate
+				for(i = 0; i < argc; i++){
+					printf("args %d: %s\n", i, args[i]);
+				}
+				returnInt = Allocate(args[1],args[2],args[3],args[4],args[5],args[6]);
+				printf("%d",returnInt);
+				break;
+			case 9:
+				// free
+				returnInt = Free(args[1]);
+				printf("%d",returnInt);
 				break;
 			default:
 			// such as -1
@@ -165,7 +184,7 @@ int matchCommand(char *array[], int index)
 // takes a pointer to the desired buffer and a pointer to the array of arguments
 // fills arguments array with tokenized buffer input and returns number of arguments
 int set_args(char *buffer, char *args[]){
-	static char seperators[5] = " =";
+	static char seperators[5] = " =,";
 	static int i;
 
 	i = 0;
@@ -174,8 +193,8 @@ int set_args(char *buffer, char *args[]){
 
 	args[i] = strtok(buffer, seperators);
 
-	while (args[i] != '\0') {
-		args[++i] = strtok('\0', seperators);
+	while (args[i] != NULL) {
+		args[++i] = strtok(NULL, seperators);
 	}
 
 	return i;
