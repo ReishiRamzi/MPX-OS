@@ -23,7 +23,7 @@
 
 #define MAXSIZE  20    /* Size of the directory array. */
 
-static int NUM_CMDS = 10;   // REMEMBER TO CHANGE WHEN NEW CMDS ADDED
+static int NUM_CMDS = 17;   // REMEMBER TO CHANGE WHEN NEW CMDS ADDED
 struct dirstruct {         /* Data type for a directory entry.        */
 	char dirnam[9];        /* The name of a .mpx file.         */
 	int  dirsiz;           /* The size of the file (in bytes). */
@@ -48,6 +48,9 @@ typedef struct dirstruct dir;  /* Use dir as the data typer name.     */
 /* MAX STACK SIZE */
 #define STK_SIZE 400
 
+/* DEFAULT PRIORITY */
+#define DEFAULT_PRIORITY 77
+
 /* Stack locations for registers  */
 #define STACK_PSW (STK_SIZE - 1)
 #define STACK_CS (STK_SIZE - 2)
@@ -55,6 +58,10 @@ typedef struct dirstruct dir;  /* Use dir as the data typer name.     */
 #define STACK_DS (STK_SIZE - 9)
 #define INIT_STACK (STK_SIZE - 12)
 #define INT_ENABLE 0x200
+
+/* The number of elements pushed on the stack in calling dispatch (3)
+   plus the registers (9) which makes 12 words or 24 bytes           */
+#define DISP_OFFSET 24
 
 struct pcbstruct {           /* Data type for a process control block */
 	struct pcbstruct *chain; // points to next pcb in chain
@@ -107,6 +114,14 @@ int initPCBs();
 void interrupt dispatch();
 void interrupt sys_call();
 
+void Load(char *name, int priority);
+void Resume(char *name);
+void Run(char *name, int priority);
+void Suspend(char *name);
+void Terminate(char *name);
+void SetPriority(char *name, int priority);
+void Dispatch_CMD();
+
 void test1(void);
 void test2(void);
 void test3(void);
@@ -130,3 +145,7 @@ extern pcb * ReadyQ; /* Pointer to priority queue of PCBs */
 extern pcb * IO_InitQ; /* Pointer to FIFO queue of PCBS */
 extern dir direct[];  /* Array of directory entries -     see direct.c */
 extern pcb * cop;    /* Currently Operating Process - SYS_SPPT.c */
+
+// sp_save saves the pointer value before the call minus the number of elements
+// on the stack after dispatch recieves control.
+extern int *sp_save;

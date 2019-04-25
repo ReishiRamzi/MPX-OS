@@ -24,7 +24,7 @@ int main()
 	} else {
 		printf("(Main) Failed to initialize PCBs %d\n");
 	}
-
+	/*
 	pcb_add1 = Get_PCB(PCB_list);
 	Build_PCB(pcb_add1, "test1", APPLICATION_PROCESS, READY, NOT_SUSPENDED, 43, (unsigned *) _CS, (unsigned *) test1);
 	Insert_PCB(&ReadyQ,pcb_add1,0);
@@ -44,9 +44,10 @@ int main()
 	pcb_add = Get_PCB(PCB_list);
 	Build_PCB(pcb_add, "test5", APPLICATION_PROCESS, READY, NOT_SUSPENDED, 43, (unsigned *) _CS, (unsigned *) test5);
 	Insert_PCB(&ReadyQ,pcb_add,0);
+	*/
 
 	sys_init();
-	dispatch();
+	//dispatch();
 
 	comhan();    /* Execute the command handler */
 

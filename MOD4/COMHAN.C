@@ -19,6 +19,7 @@ char prompt[MAXSIZE] = "mpx>";
 char *args[10];          // Array of pointers to cmd line args
 int argc;                // Stores count of args
 static int NUM_CMDS;
+
 // Array of pointers to strings for our commands
 char *cmds[] =
 {
@@ -32,12 +33,26 @@ char *cmds[] =
 	"show",
 	"allocate",
 	"free",
+	"load",
+	"resume",
+	"run",
+	"suspend",
+	"terminate",
+	"setpriority",
+	"dispatch",
 	"\0"
 };
 
 // Array of pointers to aliases for our commands
 char *als[] =
 {
+	"   ",
+	"   ",
+	"   ",
+	"   ",
+	"   ",
+	"   ",
+	"   ",
 	"   ",
 	"   ",
 	"   ",
@@ -137,15 +152,43 @@ void comhan()
 					printf("args %d: %s\n", i, args[i]);
 				}
 				returnInt = Allocate(args[1],args[2],args[3],args[4],args[5],args[6]);
-				printf("%d",returnInt);
+				printf("%d\n",returnInt);
 				break;
 			case 9:
 				// free
 				returnInt = Free(args[1]);
-				printf("%d",returnInt);
+				printf("%d\n",returnInt);
+				break;
+			case 10:
+				// load
+				Load(args[1],args[2]);
+				break;
+			case 11:
+				// resume
+				Resume(args[1]);
+				break;
+			case 12:
+				// run
+				Run(args[1],args[2]);
+				break;
+			case 13:
+				// suspend
+				Suspend(args[1]);
+				break;
+			case 14:
+				// terminate
+				Terminate(args[1]);
+				break;
+			case 15:
+				// setpriority
+				SetPriority(args[1],args[2]);
+				break;
+			case 16:
+				// dispatch
+				Dispatch_CMD();
 				break;
 			default:
-			// such as -1
+				// such as -1
 				printf("Invalid Command.\n");
 				break;
 		}

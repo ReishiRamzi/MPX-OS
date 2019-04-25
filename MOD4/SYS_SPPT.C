@@ -48,14 +48,26 @@ void sys_exit()
 
 void interrupt dispatch()
 {
- /* your dispatcher code */
-   //	pcb * ptr;
-
-	cop = ReadyQ;
-	if (cop == NULL){
-		sys_exit();
-		exit();
+	// Cop is not automatically set to ReadyQ because now it is only called by COMHAN
+	// cop = ReadyQ;
+	// Make sure the PCB assigned to cop is NOT_SUSPENDED before running.
+	// If it reaches the end of the queue, cop will be null and end dispatch.
+	while (cop->suspend != NOT_SUSPENDED){
+		cop = cop->prev;
 	}
+	if (cop == NULL){
+		//sys_exit();
+		//exit();
+
+		/* Restore Dispatch_CMD's SP */
+		_SP = sp_save;
+
+		/* Retun will restore 9 registers and execute an iret instruction,
+		   returning control to the calling procedure (Dispatch_CMD)      */
+
+		return;
+	}
+	printf("%d dispatched.\n", cop->procname); // NOT SURE IF THIS GOES HERE OR DISPATCH_CMD BEFORE THIS
 	Remove_PCB(&ReadyQ, cop);
 	cop->state = RUNNING;
 	_SP = cop->stack_ptr;
