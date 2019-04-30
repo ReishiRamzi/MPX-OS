@@ -41,14 +41,29 @@ int directory(dir *direct, int dir_size)
 
   done = findfirst ("*.MPX",&ffblk,0);
   while (!done && num_procs < dir_size) {
-      strcpy (filename,ffblk.ff_name);
-      strcpy(direct->dirnam,filename);
-      direct->dirnam[strcspn(filename,".")] = NULL;
-      direct->dirsiz = ffblk.ff_fsize;
-      ++num_procs;
-      direct++;
-      done = findnext(&ffblk);
+	  strcpy (filename,ffblk.ff_name);
+	  strcpy(direct->dirnam,filename);
+	  direct->dirnam[strcspn(filename,".")] = NULL;
+	  direct->dirsiz = ffblk.ff_fsize;
+	  ++num_procs;
+	  direct++;
+	  done = findnext(&ffblk);
   }
 
   return(num_procs);
+}
+
+int GetSize(char *name){
+	int retSize;
+	int i;
+	int numDirects;
+	retSize = -1;
+	numDirects = directory(direct, MAXSIZE);
+	for (i = 0; i < numDirects; i++){
+		if (strcmpi(direct[i].dirnam, name) == 0){
+			retSize = direct[i].dirsiz;
+			return retSize;
+		}
+	}
+	return retSize;
 }

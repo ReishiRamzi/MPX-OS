@@ -48,13 +48,15 @@ void sys_exit()
 
 void interrupt dispatch()
 {
+	cop = cop; // just in case;
+	// printf("(dispatch) Entering dispatch...\n");
 	// Cop is not automatically set to ReadyQ because now it is only called by COMHAN
 	// cop = ReadyQ;
 	// Make sure the PCB assigned to cop is NOT_SUSPENDED before running.
 	// If it reaches the end of the queue, cop will be null and end dispatch.
-	while (cop->suspend != NOT_SUSPENDED){
+	do {
 		cop = cop->prev;
-	}
+	} while (cop != NULL && cop->suspend != NOT_SUSPENDED);
 	if (cop == NULL){
 		//sys_exit();
 		//exit();
@@ -67,8 +69,7 @@ void interrupt dispatch()
 
 		return;
 	}
-	printf("%d dispatched.\n", cop->procname); // NOT SURE IF THIS GOES HERE OR DISPATCH_CMD BEFORE THIS
-	Remove_PCB(&ReadyQ, cop);
+	//Remove_PCB(&ReadyQ, cop);
 	cop->state = RUNNING;
 	_SP = cop->stack_ptr;
 
@@ -99,6 +100,7 @@ void interrupt sys_call()
 	/* Switch to our system stack to avoid contaminating a process's stack  */
 	_SP = &sys_stack[STK_SIZE - 1];
 
+	/*
 	if (parm_add->op_number != EXIT_CODE){
 		Insert_PCB(&ReadyQ, cop, 0);
 		cop->state = READY;
@@ -106,5 +108,7 @@ void interrupt sys_call()
 		cop = cop;
 	}
 	cop = NULL;
+	*/
+
 	dispatch();
 }

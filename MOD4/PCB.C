@@ -246,16 +246,26 @@ int Insert_PCB(pcb **PCB_Q, pcb *addr, int method) {
 					//printf("(Insert_PCB) Curr Priority %d > Address Priority %d\n",(*PCB_Q)->priority,addr->priority);
 				}
 				//printf("(Insert_PCB) Found position in Priority Queue\n");
-				if ((*PCB_Q)->priority >= addr->priority){ // if found position is not front of queue
+				if ((*PCB_Q)->priority >= addr->priority && (*PCB_Q)->next != NULL){ // if found position is not front of queue
 					(*PCB_Q)->prev->next = addr;
 					addr->prev = (*PCB_Q)->prev;
 					addr->next = *PCB_Q;
 					(*PCB_Q)->prev = addr;
-					//printf("(Insert_PCB) Assigned position in Priority Queue.\n");
+
+					printf("(Insert_PCB) Assigned higher position in Priority Queue.\n");
+				} else if ((*PCB_Q)->priority < addr->priority && (*PCB_Q)->next != NULL){ // if found position is not front of queue
+					(*PCB_Q)->next->prev = addr;
+					addr->next = (*PCB_Q)->next;
+					addr->prev = *PCB_Q;
+					(*PCB_Q)->next = addr;
+
+					printf("(Insert_PCB) Assigned lower position in Priority Queue.\n");
 				} else { // found position was front of queue
 					addr->prev = *PCB_Q;
 					addr->next = NULL;
 					(*PCB_Q)->next = addr;
+					*PCB_Q = addr;
+					printf("(Insert_PCB) Assigned to front of Priority Queue.\n");
 				}
 				returnInt = 2; // PCB placed inside Queue
 			}

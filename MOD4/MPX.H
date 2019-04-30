@@ -91,12 +91,12 @@ typedef struct pcbstruct pcb; /* use pcb as the data type name for pcbstruct */
 void comhan(void);                    /* The MPX/OS command handler.  */
 void sys_req(int,int,char *,int *);   /* MPX system request function. */
 int  directory(dir *, int);           /* Support function to load the */
-					                  /* directory array.             */
+									  /* directory array.             */
 int quit();                           /* MPX quit function.           */
 char* version();                      /* Check current MPX version    */
 void alias(char *aliasArray[], char *arguments[], int index); /* make an alias for commands */
 int matchCommand(char *array[], int index);  /* Takes an array of cmds and matches
-                                                command based on index   */
+												command based on index   */
 char* changePrompt(char *currPrompt, char *args[]);
 /*
 *	PCB function prototypes
@@ -111,16 +111,20 @@ int Insert_PCB(pcb **PCB_Q, pcb *addr, int method);
 int Remove_PCB(pcb **PCB_Q, pcb *addr);
 void show (char whatToShow[9]);
 int initPCBs();
+int GetSize(char *name);
+
 void interrupt dispatch();
 void interrupt sys_call();
 
-void Load(char *name, int priority);
+void Load(char *name, char *priority);
 void Resume(char *name);
-void Run(char *name, int priority);
+void Run(char *name, char *priority);
 void Suspend(char *name);
 void Terminate(char *name);
-void SetPriority(char *name, int priority);
+void SetPriority(char *name, char *priority);
 void Dispatch_CMD();
+
+int load(unsigned *load_addr,char pname[]);
 
 void test1(void);
 void test2(void);
