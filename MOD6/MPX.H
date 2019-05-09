@@ -23,7 +23,7 @@
 
 #define MAXSIZE  20    /* Size of the directory array. */
 
-static int NUM_CMDS = 17;   // REMEMBER TO CHANGE WHEN NEW CMDS ADDED
+static int NUM_CMDS = 18;   // REMEMBER TO CHANGE WHEN NEW CMDS ADDED
 struct dirstruct {         /* Data type for a directory entry.        */
 	char dirnam[9];        /* The name of a .mpx file.         */
 	int  dirsiz;           /* The size of the file (in bytes). */
@@ -63,6 +63,25 @@ typedef struct dirstruct dir;  /* Use dir as the data typer name.     */
    plus the registers (9) which makes 12 words or 24 bytes           */
 #define DISP_OFFSET 24
 
+/*
+*	Device Control Block structure
+*/
+struct dcbstruct {
+	int current_IO;
+	int *event_flag;
+	int far * buffer_addr;
+	int far * length;
+	int far * buffer_ptr;
+	int char_count;
+	int * ring_buffer;
+	int * ring_in;
+	int * ring_out;
+	int ring_length;
+	int ring_size;
+};
+
+typedef struct dcbstruct dcb;
+
 struct pcbstruct {           /* Data type for a process control block */
 	struct pcbstruct *chain; // points to next pcb in chain
 	struct pcbstruct *next;  // points to next pcb in queue
@@ -86,7 +105,7 @@ struct pcbstruct {           /* Data type for a process control block */
 
 typedef struct pcbstruct pcb; /* use pcb as the data type name for pcbstruct */
 
-/* Function prototypes. */
+/* COMHAN Function prototypes. */
 
 void comhan(void);                    /* The MPX/OS command handler.  */
 void sys_req(int,int,char *,int *);   /* MPX system request function. */
@@ -98,6 +117,7 @@ void alias(char *aliasArray[], char *arguments[], int index); /* make an alias f
 int matchCommand(char *array[], int index);  /* Takes an array of cmds and matches
 												command based on index   */
 char* changePrompt(char *currPrompt, char *args[]);
+
 /*
 *	PCB function prototypes
 */
@@ -113,9 +133,13 @@ void show (char whatToShow[9]);
 int initPCBs();
 int GetSize(char *name);
 
+/* INTERRUPTS */
 void interrupt dispatch();
 void interrupt sys_call();
+void interrupt clock_int();
+void interrupt sys_call();
 
+/* PROCESS FUNCTIONS */
 void Load(char *name, char *priority);
 void Resume(char *name);
 void Run(char *name, char *priority);
@@ -123,16 +147,29 @@ void Suspend(char *name);
 void Terminate(char *name);
 void SetPriority(char *name, char *priority);
 void Dispatch_CMD();
-
 int load(unsigned *load_addr,char pname[]);
 
+/* CLOCK FUNCTION PROTOTYPES */
+void Stop_Clock();
+void Start_Clock();
+void Set_Clock(int hours, int minutes, int seconds);
+void Read_Clock();
+void ClockCom(char *arg1, char *arg2, char *arg3);
+void PrintClock();
+
+/* DEVICE DRIVER FUNCTION PROTOTYPES */
+int com_open(int *com_flag, int baud_rate);
+int com_read(char far *buffer, int far *length);
+int com_write(char far *buffer, int far *length);
+int com_close();
+
+/* TEST FUNCTIONS */
 void test1(void);
 void test2(void);
 void test3(void);
 void test4(void);
 void test5(void);
 
-void interrupt sys_call();
 /*
  *   Global variable EXTERN directives.
  *
@@ -149,7 +186,7 @@ extern pcb * ReadyQ; /* Pointer to priority queue of PCBs */
 extern pcb * IO_InitQ; /* Pointer to FIFO queue of PCBS */
 extern dir direct[];  /* Array of directory entries -     see direct.c */
 extern pcb * cop;    /* Currently Operating Process - SYS_SPPT.c */
-
+extern dcb com_dcb;
 // sp_save saves the pointer value before the call minus the number of elements
 // on the stack after dispatch recieves control.
 extern int *sp_save;

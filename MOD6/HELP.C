@@ -27,7 +27,8 @@ char *helpList[] =
     "suspend name         - Suspends PCB called name\n",
     "terminate name       - Terminates PCB called name\n",
     "setpriority name ppp - Sets PCB's priority\n",
-    "dispatch             - Dispatches a process\n"
+	"dispatch             - Dispatches a process\n",
+	"clock command        - Stops, Starts or Sets Clock\n"
 };
 
 // takes a command to print help information about -

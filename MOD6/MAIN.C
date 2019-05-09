@@ -10,6 +10,8 @@
 
 pcb * pcb_add;
 pcb * pcb_add1;
+int com_flag;
+int prt_flag;
 
 int main()
 {
@@ -47,6 +49,7 @@ int main()
 	*/
 
 	sys_init();
+	clock_open();
 	//dispatch();
 
 	comhan();    /* Execute the command handler */

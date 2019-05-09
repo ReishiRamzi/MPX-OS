@@ -40,12 +40,14 @@ char *cmds[] =
 	"terminate",
 	"setpriority",
 	"dispatch",
+	"clock"
 	"\0"
 };
 
 // Array of pointers to aliases for our commands
 char *als[] =
 {
+	"   ",
 	"   ",
 	"   ",
 	"   ",
@@ -187,6 +189,10 @@ void comhan()
 				// dispatch
 				Dispatch_CMD();
 				break;
+			case 17:
+				// clock
+				ClockCom(args[1], args[2], args[3]);
+				break;
 			default:
 				// such as -1
 				printf("Invalid Command.\n");
@@ -227,7 +233,7 @@ int matchCommand(char *array[], int index)
 // takes a pointer to the desired buffer and a pointer to the array of arguments
 // fills arguments array with tokenized buffer input and returns number of arguments
 int set_args(char *buffer, char *args[]){
-	static char seperators[5] = " =,";
+	static char seperators[5] = " =,:";
 	static int i;
 
 	i = 0;
